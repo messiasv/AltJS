@@ -34,17 +34,10 @@
 .Code-area, .Result-area {
   flex: 1 100%;
   height: 50vh;
-}
-
-.Code-area {
   display: flex;
 }
 
-.Result-area {
-  background-color: lightcyan;
-}
-
-.Code-entry {
+.Code-entry, .Result {
   height: 95%;
   width: 95%;
   margin: auto;
@@ -54,4 +47,8 @@
   background-color: lightcyan;
   font-size: large;
   font-family: monospace;
+}
+
+#run-button {
+  color: green;
 }
