@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>進撃のバゲット</title>
+    <link rel="stylesheet" type="text/css" href="./style.css"/>
+    <link type="text/javascript" href="./biwascheme.js" />
+  </head>
+  <body>
+    <div class="App">
+        <div class="App-header">
+          <img src="biwascheme_logo.png" className="App-logo" alt="logo" style="height:105px" />
+          <h2>進撃のバゲット</h2>
+        </div>
+
+        <p class="App-intro">
+          BiwaScheme is a Scheme interpreter written in JavaScript.
+        </p>
+
+        <script type="text/javascript" src="biwascheme.js"></script>
+        <script >
+        function handleClick() {
+          var codeEntry = document.getElementById('code-entry');
+          var resultOutput = document.getElementById("result");
+          var code = codeEntry.value.toString();
+          codeEntry.value = "";
+          var console = document.getElementById("bs-console");
+          while (console.firstChild) {
+            console.removeChild(console.firstChild);
+          }
+          if (code == "") {
+            resultOutput.value = code;
+          } else {
+            var biwascheme = new BiwaScheme.Interpreter(function(e, state) {
+              $('output')[0].innerHTML += e.message;
+            });
+            var onError = function(e){ console.error(e); }
+            var biwa = new BiwaScheme.Interpreter(onError)
+            biwa.evaluate(code, function(result) {
+              resultOutput.value = result;
+            });
+          }
+        }
+        </script>
+
+        <button id="run-button" type="Button" onClick="handleClick()">&#9658;</button>
+
+        <div class="App-content" id="app-content">
+          <div class="Code-area">
+            <textarea class="Code-entry" id="code-entry" placeholder="Please type in some code!"></textarea>
+          </div>
+
+          <div class="Result-area">
+            <textarea class="Result" id="result" disabled="disabled" placeholder="Result"></textarea>
+          </div>
+
+          <div class="Console-area">
+            <div id="console" class="Console">
+              <div id="bs-console"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </body>
+</html>
