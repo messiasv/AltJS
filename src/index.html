@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta charset="utf-8">
     <title>進撃のバゲット</title>
@@ -8,14 +8,37 @@
   </head>
   <body>
     <div class="App">
+        <script>
+          var app = {}
+          app.translations = {
+            en: {
+              intro: "BiwaScheme is a Scheme interpreter written in JavaScript.",
+              instruction: "Please type in some code!",
+              resultStr: "Result"
+            },
+            fr: {
+              intro: "Biwascheme est un interpréteur du langage Scheme, écrit en JavaScript.",
+              instruction: "Merci d'entrer du code!",
+              resultStr: "Résultat"
+            },
+            ja: {
+              intro: "BiwaSchemeは、JavaScriptで書かれたSchemeインタプリタです。",
+              instruction: "いくつかのコードを入力してください！",
+              resultStr: "結果"
+            }
+          };
+
+          var currentLanguage = document.documentElement.lang || "en";
+          function gettext( key ) {
+            return app.lang[ key ] || app.translations.en[ key ] || "{translation key not found: " + key + "}";
+          }
+        </script>
+
         <div class="App-header">
           <img src="biwascheme_logo.png" className="App-logo" alt="logo" style="height:105px" />
           <h2>進撃のバゲット</h2>
         </div>
-
-        <p class="App-intro">
-          BiwaScheme is a Scheme interpreter written in JavaScript.
-        </p>
+        <p id="intro" class="App-intro"></p>
 
         <script type="text/javascript" src="biwascheme.js"></script>
         <script >
@@ -47,11 +70,11 @@
 
         <div class="App-content" id="app-content">
           <div class="Code-area">
-            <textarea class="Code-entry" id="code-entry" placeholder="Please type in some code!"></textarea>
+            <textarea class="Code-entry" id="code-entry"></textarea>
           </div>
 
           <div class="Result-area">
-            <textarea class="Result" id="result" disabled="disabled" placeholder="Result"></textarea>
+            <textarea class="Result" id="result" disabled="disabled"></textarea>
           </div>
 
           <div class="Console-area">
@@ -60,6 +83,28 @@
             </div>
           </div>
         </div>
+
+        <select id="lang-select" onchange="changeLang(this.value)">
+          <option value="en">English</option>
+          <option value="fr">French</option>
+          <option value="ja">日本語</option>
+        </select>
+
+        <script>
+          function displayStrings() {
+            app.lang = app.translations[ currentLanguage ] || app.translations.en;
+            document.getElementById("intro").innerHTML = gettext("intro");
+            document.getElementById("code-entry").placeholder = gettext("instruction");
+            document.getElementById("result").placeholder = gettext("resultStr");
+          }
+
+          function changeLang(lang) {
+            currentLanguage = lang;
+            displayStrings();
+          }
+
+          displayStrings();
+        </script>
       </div>
   </body>
 </html>
