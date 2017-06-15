@@ -48,6 +48,15 @@
   border: 0;
 }
 
+#pgm-lang-select {
+  position: relative;
+  float: right;
+  bottom: 35%;
+  right: 2%;
+  height: 20px;
+  border: 0;
+}
+
 #run-button {
   color: green;
 }

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>進撃のバゲット</title>
     <link rel="stylesheet" type="text/css" href="./style.css"/>
-    <link type="text/javascript" href="./biwascheme.js" />
+    <link type="text/javascript" href="lang/biwascheme.js" />
   </head>
   <body>
     <div class="App">
@@ -28,14 +28,25 @@
             }
           };
 
+          app.logo = {
+            scheme: "biwascheme.png",
+            prolog:"prolog.png"
+          }
+
           var currentLanguage = document.documentElement.lang || "en";
           function gettext( key ) {
             return app.lang[ key ] || app.translations.en[ key ] || "{translation key not found: " + key + "}";
           }
+
+          function getlogo( key ) {
+            return "logos/" + app.logo[ key ];
+          }
+
+          var currentPgmLanguage = "scheme";
         </script>
 
         <div class="App-header">
-          <img src="biwascheme_logo.png" className="App-logo" alt="logo" style="height:105px" />
+          <img class="App-logo" id="app-logo" alt="logo" style="height:105px" />
           <h2>進撃のバゲット</h2>
 
           <select id="lang-select" onchange="changeLang(this.value)">
@@ -43,33 +54,46 @@
             <option value="fr">French</option>
             <option value="ja">日本語</option>
           </select>
+
+          <select id="pgm-lang-select" onchange="changePgmLang(this.value)">
+            <option value="scheme">Scheme</option>
+            <option value="prolog">Prolog</option>
+          </select>
         </div>
         <p id="intro" class="App-intro"></p>
 
-        <script type="text/javascript" src="biwascheme.js"></script>
+        <script type="text/javascript" src="lang/biwascheme.js"></script>
         <script >
-        function handleClick() {
-          var codeEntry = document.getElementById('code-entry');
-          var resultOutput = document.getElementById("result");
-          var code = codeEntry.value.toString();
-          codeEntry.value = "";
-          var console = document.getElementById("bs-console");
-          while (console.firstChild) {
-            console.removeChild(console.firstChild);
+          function handleClick() {
+            var codeEntry = document.getElementById('code-entry');
+            var resultOutput = document.getElementById("result");
+            var code = codeEntry.value.toString();
+            codeEntry.value = "";
+            var console = document.getElementById("console");
+            while (console.firstChild) {
+              console.removeChild(console.firstChild);
+            }
+            if (code == "") {
+              resultOutput.value = code;
+            } else {
+                switch(currentPgmLanguage) {
+                  case "scheme":
+                    var biwascheme = new BiwaScheme.Interpreter(function(e, state) {
+                      $('output')[0].innerHTML += e.message;
+                    });
+                    var onError = function(e){ console.error(e); }
+                    var biwa = new BiwaScheme.Interpreter(onError)
+                    biwa.evaluate(code, function(result) {
+                      resultOutput.value = result;
+                    });
+                    break;
+                  case "prolog":
+                    // prolog interpretation
+                    break;
+                  default:
+                }
+            }
           }
-          if (code == "") {
-            resultOutput.value = code;
-          } else {
-            var biwascheme = new BiwaScheme.Interpreter(function(e, state) {
-              $('output')[0].innerHTML += e.message;
-            });
-            var onError = function(e){ console.error(e); }
-            var biwa = new BiwaScheme.Interpreter(onError)
-            biwa.evaluate(code, function(result) {
-              resultOutput.value = result;
-            });
-          }
-        }
         </script>
 
         <button id="run-button" type="Button" onClick="handleClick()">&#9658;</button>
@@ -84,8 +108,8 @@
           </div>
 
           <div class="Console-area">
-            <div id="console" class="Console">
-              <div id="bs-console"></div>
+            <div class="Console">
+              <div id="console"></div>
             </div>
           </div>
         </div>
@@ -98,12 +122,22 @@
             document.getElementById("result").placeholder = gettext("resultStr");
           }
 
+          function updateLogo() {
+            document.getElementById("app-logo").src = getlogo(currentPgmLanguage);
+          }
+
           function changeLang(lang) {
             currentLanguage = lang;
             displayStrings();
           }
 
+          function changePgmLang(lang) {
+            currentPgmLanguage = lang;
+            updateLogo();
+          }
+
           displayStrings();
+          updateLogo();
         </script>
       </div>
   </body>
