@@ -12,17 +12,20 @@
           var app = {}
           app.translations = {
             en: {
-              intro: "BiwaScheme is a Scheme interpreter written in JavaScript.",
+              scheme: "BiwaScheme is a Scheme interpreter written in JavaScript.",
+              prolog: "prolog.js is a Prolog parser, compiler and interpreter written in Javascript.",
               instruction: "Please type in some code!",
               resultStr: "Result"
             },
             fr: {
-              intro: "Biwascheme est un interpréteur du langage Scheme, écrit en JavaScript.",
+              scheme: "Biwascheme est un interpréteur du langage Scheme, écrit en JavaScript.",
+              prolog: "prolog.js est un parseur, compilateur et interpréteur du langage Prolog, écrit en Javascript.",
               instruction: "Merci d'entrer du code!",
               resultStr: "Résultat"
             },
             ja: {
-              intro: "BiwaSchemeは、JavaScriptで書かれたSchemeインタプリタです。",
+              scheme: "BiwaScheme は JavaScript で 書かれた Scheme インタプリタです。",
+              prolog: "prolog.js は Javascript で 書かれた Prolog パーサ、コンパイラ、インタプリタです。",
               instruction: "いくつかのコードを入力してください！",
               resultStr: "結果"
             }
@@ -87,8 +90,8 @@
                       resultOutput.value = result;
                     });
                     break;
-                  case "prolog":
-                    // prolog interpretation
+                  case "prolog": // prolog interpretation
+                    // TODO: add the prolog interpretation
                     break;
                   default:
                 }
@@ -117,7 +120,7 @@
         <script>
           function displayStrings() {
             app.lang = app.translations[ currentLanguage ] || app.translations.en;
-            document.getElementById("intro").innerHTML = gettext("intro");
+            document.getElementById("intro").innerHTML = gettext(currentPgmLanguage);
             document.getElementById("code-entry").placeholder = gettext("instruction");
             document.getElementById("result").placeholder = gettext("resultStr");
           }
@@ -133,6 +136,7 @@
 
           function changePgmLang(lang) {
             currentPgmLanguage = lang;
+            displayStrings();
             updateLogo();
           }
 
