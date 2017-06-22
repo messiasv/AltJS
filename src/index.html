@@ -12,28 +12,46 @@
           var app = {}
           app.translations = {
             en: {
-              scheme: "BiwaScheme is a Scheme interpreter written in JavaScript.",
-              prolog: "prolog.js is a Prolog parser, compiler and interpreter written in Javascript.",
+              biwascheme: "BiwaScheme",
+              clojurescript: "ClojureScript",
+              haste: "Haste",
+              js_of_ocaml: "Js_of_ocaml",
+              prologjs: "prolog.js",
+              scalajs: "Scala.js",
+
+              biwascheme_intro: "BiwaScheme is a Scheme interpreter written in JavaScript.",
+              clojurescript_intro: "ClojureScript is a compiler for Clojure that targets JavaScript.",
+              haste_intro: "Haste is a compiler generating JavaScript code from Haskell.",
+              js_of_ocaml_intro: "Js_of_ocaml is a compiler of OCaml bytecode to Javascript. It makes it possible to run Ocaml programs in a Web browser.",
+              prologjs_intro: "prolog.js is a Prolog parser, compiler and interpreter written in Javascript.",
+              scalajs_intro: "Scala.js is a Scala to JavaScript compiler.",
+
               instruction: "Please type in some code!",
               resultStr: "Result"
             },
             fr: {
-              scheme: "Biwascheme est un interpréteur du langage Scheme, écrit en JavaScript.",
-              prolog: "prolog.js est un parseur, compilateur et interpréteur du langage Prolog, écrit en Javascript.",
+              biwascheme_intro: "Biwascheme est un interpréteur du langage Scheme, écrit en JavaScript.",
+              prologjs_intro: "prolog.js est un parseur, compilateur et interpréteur du langage Prolog, écrit en Javascript.",
+
               instruction: "Merci d'entrer du code!",
               resultStr: "Résultat"
             },
             ja: {
-              scheme: "BiwaScheme は JavaScript で 書かれた Scheme インタプリタです。",
-              prolog: "prolog.js は Javascript で 書かれた Prolog パーサ、コンパイラ、インタプリタです。",
+              biwascheme_intro: "BiwaScheme は JavaScript で 書かれた Scheme インタプリタです。",
+              prologjs_intro: "prolog.js は Javascript で 書かれた Prolog パーサ、コンパイラ、インタプリタです。",
+
               instruction: "いくつかのコードを入力してください！",
               resultStr: "結果"
             }
           };
 
           app.logo = {
-            scheme: "biwascheme.png",
-            prolog:"prolog.png"
+            biwascheme:    "biwascheme.png",
+            clojurescript: "clojurescript.png",
+            haste:         "haskell.svg", // TODO: change the logo to the js one
+            js_of_ocaml:   "js_of_ocaml.svg",
+            prologjs:      "prolog.png", //  TODO: change the logo to the js one
+            scalajs:       "scalajs.svg"
           }
 
           var currentLanguage = document.documentElement.lang || "en";
@@ -45,12 +63,12 @@
             return "logos/" + app.logo[ key ];
           }
 
-          var currentPgmLanguage = "scheme";
+          var currentPgmLanguage = "biwascheme";
         </script>
 
         <div class="App-header">
           <img class="App-logo" id="app-logo" alt="logo" style="height:105px" />
-          <h2>進撃のバゲット</h2>
+          <h3 id="language-name" ></h3>
 
           <select id="lang-select" onchange="changeLang(this.value)">
             <option value="en">English</option>
@@ -59,8 +77,12 @@
           </select>
 
           <select id="pgm-lang-select" onchange="changePgmLang(this.value)">
-            <option value="scheme">Scheme</option>
-            <option value="prolog">Prolog</option>
+            <option value="biwascheme">BiwaScheme</option>
+            <option value="clojurescript">ClojureScript</option>
+            <option value="haste">Haste</option>
+            <option value="js_of_ocaml">Js_of_ocaml</option>
+            <option value="prologjs">prolog.js</option>
+            <option value="scalajs">Scala.js</option>
           </select>
         </div>
         <p id="intro" class="App-intro"></p>
@@ -80,7 +102,7 @@
               resultOutput.value = code;
             } else {
                 switch(currentPgmLanguage) {
-                  case "scheme":
+                  case "biwascheme":
                     var biwascheme = new BiwaScheme.Interpreter(function(e, state) {
                       $('output')[0].innerHTML += e.message;
                     });
@@ -90,10 +112,24 @@
                       resultOutput.value = result;
                     });
                     break;
-                  case "prolog": // prolog interpretation
-                    // TODO: add the prolog interpretation
+                  case "clojurescript": // clojurescript interpretation
+                    // TODO: add the clojurescript interpretation
+                    break;
+                  case "haste": // haste interpretation
+                    // TODO: add the haste interpretation
+                    break;
+                  case "js_of_ocaml": // js_of_ocaml interpretation
+                    // TODO: add the js_of_ocaml interpretation
+                    break;
+                  case "prologjs": // prologjs interpretation
+                    // TODO: add the prologjs interpretation
+                    break;
+                  case "scalajs": // scalajs interpretation
+                    // TODO: add the scalajs interpretation
                     break;
                   default:
+                    // shouldn't be reached
+                    console.log("You shouldn't reach this part of the code!");
                 }
             }
           }
@@ -120,7 +156,8 @@
         <script>
           function displayStrings() {
             app.lang = app.translations[ currentLanguage ] || app.translations.en;
-            document.getElementById("intro").innerHTML = gettext(currentPgmLanguage);
+            document.getElementById("language-name").innerHTML = gettext(currentPgmLanguage);
+            document.getElementById("intro").innerHTML = gettext(currentPgmLanguage + "_intro");
             document.getElementById("code-entry").placeholder = gettext("instruction");
             document.getElementById("result").placeholder = gettext("resultStr");
           }
