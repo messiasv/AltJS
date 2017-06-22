@@ -21,13 +21,13 @@
   justify-content: space-between;
 }
 
-.Code-area, .Result-area, .Console-area {
+.Code-area, .Result-area, .Extra-area {
   flex: 1 100%;
   height: 50vh;
   display: flex;
 }
 
-.Code-entry, .Result, .Console {
+.Code-entry, .Result, .Extra {
   height: 95%;
   width: 95%;
   margin: auto;

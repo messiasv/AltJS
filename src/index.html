@@ -94,9 +94,9 @@
             var resultOutput = document.getElementById("result");
             var code = codeEntry.value.toString();
             codeEntry.value = "";
-            var console = document.getElementById("console");
-            while (console.firstChild) {
-              console.removeChild(console.firstChild);
+            var bsconsole = document.getElementById("bs-console");
+            while (bsconsole.firstChild) {
+              bsconsole.removeChild(bsconsole.firstChild);
             }
             if (code == "") {
               resultOutput.value = code;
@@ -146,9 +146,9 @@
             <textarea class="Result" id="result" disabled="disabled"></textarea>
           </div>
 
-          <div class="Console-area">
-            <div class="Console">
-              <div id="console"></div>
+          <div class="Extra-area">
+            <div class="Extra">
+              <div id="bs-console"></div>
             </div>
           </div>
         </div>
