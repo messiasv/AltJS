@@ -54,7 +54,15 @@
             scalajs:       "scalajs.svg"
           }
 
+          app.sample = {
+            biwascheme: {
+              hello_world: '(print "Hello world!")',
+              fibonacci : "(define (fib n)\n(if (< n 2) n (+ (fib (- n 1))\n(fib (- n 2)))))\n(fib 9)"
+            }
+          }
+
           var currentLanguage = document.documentElement.lang || "en";
+          var currentPgmLanguage = "biwascheme";
           function gettext( key ) {
             return app.lang[ key ] || app.translations.en[ key ] || "{translation key not found: " + key + "}";
           }
@@ -63,7 +71,10 @@
             return "logos/" + app.logo[ key ];
           }
 
-          var currentPgmLanguage = "biwascheme";
+          function getSample( sample ) {
+            return app.samples[sample];
+          }
+
         </script>
 
         <div class="App-header">
@@ -151,6 +162,13 @@
               <div id="bs-console"></div>
             </div>
           </div>
+         </div>
+         <div>
+
+  <div>
+    <button type="Button" onClick="displaySample('hello_world')">Hello World</button>
+    <button type="Button" onClick="displaySample('fibonacci')">Fibonacci</button>
+  </div>
         </div>
 
         <script>
@@ -164,6 +182,7 @@
 
           function updateLogo() {
             document.getElementById("app-logo").src = getlogo(currentPgmLanguage);
+            app.samples = app.sample[currentPgmLanguage] || app.sample.biwascheme;
           }
 
           function changeLang(lang) {
@@ -175,6 +194,11 @@
             currentPgmLanguage = lang;
             displayStrings();
             updateLogo();
+          }
+
+          function displaySample(sample) {
+            document.getElementById("code-entry").value = getSample(sample);
+            console.log("clicked");
           }
 
           displayStrings();
