@@ -7,6 +7,9 @@
     <link type="text/javascript" href="lang/biwascheme.js" />
   </head>
   <body>
+<script	src="https://code.jquery.com/jquery-3.2.1.js"
+			  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+			  crossorigin="anonymous"></script>
     <div class="App">
         <script>
           var app = {}
@@ -104,16 +107,15 @@
             var codeEntry = document.getElementById('code-entry');
             var resultOutput = document.getElementById("result");
             var code = codeEntry.value.toString();
-            codeEntry.value = "";
-            var bsconsole = document.getElementById("bs-console");
-            while (bsconsole.firstChild) {
-              bsconsole.removeChild(bsconsole.firstChild);
-            }
             if (code == "") {
               resultOutput.value = code;
             } else {
                 switch(currentPgmLanguage) {
-                  case "biwascheme":
+                  case "biwascheme": // biwascheme interpretation
+                    var bsconsole = document.getElementById("bs-console");
+                    while (bsconsole.firstChild) {
+                      bsconsole.removeChild(bsconsole.firstChild);
+                    }
                     var biwascheme = new BiwaScheme.Interpreter(function(e, state) {
                       $('output')[0].innerHTML += e.message;
                     });
@@ -127,7 +129,30 @@
                     // TODO: add the clojurescript interpretation
                     break;
                   case "haste": // haste interpretation
-                    // TODO: add the haste interpretation
+                    var compilerUrl = "http://platy.eng.kagawa-u.ac.jp/WappenWeb/HasteCompiler";
+                    $(function () {
+                    		var source = $("#code-entry").val();
+                    		var name   = "user-input.hs";
+                    		var file   = new File([source], name);
+                    		var formData = new FormData();
+                    		formData.append(name, file);
+                    	    $.ajax({
+                    	        url: compilerUrl
+                    	    	, type: "POST"
+                    	    	, processData: false
+                    	    	, contentType: false
+                    	    	, data: formData
+                    	    }).done(function(data) {
+                    	    	console.log("success", data);
+                    	    	$("#result").val(data);
+                    	    }).fail(function(msg) {
+                    	    	console.log("failure", msg);
+                    	    });
+
+
+                    		return false;
+
+                    });
                     break;
                   case "js_of_ocaml": // js_of_ocaml interpretation
                     // TODO: add the js_of_ocaml interpretation
@@ -143,6 +168,7 @@
                     console.log("You shouldn't reach this part of the code!");
                 }
             }
+            codeEntry.value = "";
           }
         </script>
 
@@ -182,8 +208,18 @@
 
           function updateLogo() {
             document.getElementById("app-logo").src = getlogo(currentPgmLanguage);
+          }
+
+          function initSamples() {
             app.samples = app.sample[currentPgmLanguage] || app.sample.biwascheme;
           }
+
+          function init() {
+            displayStrings();
+            updateLogo();
+            initSamples();
+          }
+
 
           function changeLang(lang) {
             currentLanguage = lang;
@@ -192,17 +228,14 @@
 
           function changePgmLang(lang) {
             currentPgmLanguage = lang;
-            displayStrings();
-            updateLogo();
+            init();
           }
 
           function displaySample(sample) {
             document.getElementById("code-entry").value = getSample(sample);
-            console.log("clicked");
           }
 
-          displayStrings();
-          updateLogo();
+          init();
         </script>
       </div>
   </body>
