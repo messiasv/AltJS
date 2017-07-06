@@ -1,96 +1,108 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>AltJS</title>
-    <link rel="stylesheet" type="text/css" href="./style.css"/>
-    <link type="text/javascript" href="lang/biwascheme.js" />
-  </head>
-  <body>
-<script	src="https://code.jquery.com/jquery-3.2.1.js"
-			  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
-			  crossorigin="anonymous"></script>
-    <div class="App">
-        <script>
-          var app = {}
-          app.translations = {
-            en: {
-              biwascheme: "BiwaScheme",
-              clojurescript: "ClojureScript",
-              haste: "Haste",
-              js_of_ocaml: "Js_of_ocaml",
-              prologjs: "prolog.js",
-              scalajs: "Scala.js",
 
-              biwascheme_intro: "BiwaScheme is a Scheme interpreter written in JavaScript.",
-              clojurescript_intro: "ClojureScript is a compiler for Clojure that targets JavaScript.",
-              haste_intro: "Haste is a compiler generating JavaScript code from Haskell.",
-              js_of_ocaml_intro: "Js_of_ocaml is a compiler of OCaml bytecode to Javascript. It makes it possible to run Ocaml programs in a Web browser.",
-              prologjs_intro: "prolog.js is a Prolog parser, compiler and interpreter written in Javascript.",
-              scalajs_intro: "Scala.js is a Scala to JavaScript compiler.",
+<head>
+  <meta charset="utf-8">
+  <title>AltJS</title>
+  <link rel="stylesheet" type="text/css" href="./style.css" />
+  <link type="text/javascript" href="lang/biwascheme.js" />
+</head>
 
-              instruction: "Please type in some code!",
-              resultStr: "Result"
-            },
-            fr: {
-              biwascheme_intro: "Biwascheme est un interpréteur du langage Scheme, écrit en JavaScript.",
-              prologjs_intro: "prolog.js est un parseur, compilateur et interpréteur du langage Prolog, écrit en Javascript.",
+<body>
+  <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+  <div class="App">
+    <script>
+      var app = {}
+      app.translations = {
+        en: {
+          biwascheme: "BiwaScheme",
+          clojurescript: "ClojureScript",
+          haste: "Haste",
+          js_of_ocaml: "Js_of_ocaml",
+          prologjs: "prolog.js",
+          scalajs: "Scala.js",
 
-              instruction: "Merci d'entrer du code!",
-              resultStr: "Résultat"
-            },
-            ja: {
-              biwascheme_intro: "BiwaScheme は JavaScript で 書かれた Scheme インタプリタです。",
-              prologjs_intro: "prolog.js は Javascript で 書かれた Prolog パーサ、コンパイラ、インタプリタです。",
+          biwascheme_intro: "BiwaScheme is a Scheme interpreter written in JavaScript.",
+          clojurescript_intro: "ClojureScript is a compiler for Clojure that targets JavaScript.",
+          haste_intro: "Haste is a compiler generating JavaScript code from Haskell.",
+          js_of_ocaml_intro: "Js_of_ocaml is a compiler of OCaml bytecode to Javascript. It makes it possible to run Ocaml programs in a Web browser.",
+          prologjs_intro: "prolog.js is a Prolog parser, compiler and interpreter written in Javascript.",
+          scalajs_intro: "Scala.js is a Scala to JavaScript compiler.",
 
-              instruction: "いくつかのコードを入力してください！",
-              resultStr: "結果"
-            }
-          };
+          instruction: "Please type in some code!",
+          resultStr: "Result"
+        },
+        fr: {
+          biwascheme_intro: "Biwascheme est un interpréteur du langage Scheme, écrit en JavaScript.",
+          prologjs_intro: "prolog.js est un parseur, compilateur et interpréteur du langage Prolog, écrit en Javascript.",
 
-          app.logo = {
-            biwascheme:    "biwascheme.png",
-            clojurescript: "clojurescript.png",
-            haste:         "haskell.svg", // TODO: change the logo to the js one
-            js_of_ocaml:   "js_of_ocaml.svg",
-            prologjs:      "prolog.png", //  TODO: change the logo to the js one
-            scalajs:       "scalajs.svg"
+          instruction: "Merci d'entrer du code!",
+          resultStr: "Résultat"
+        },
+        ja: {
+          biwascheme_intro: "BiwaScheme は JavaScript で 書かれた Scheme インタプリタです。",
+          prologjs_intro: "prolog.js は Javascript で 書かれた Prolog パーサ、コンパイラ、インタプリタです。",
+
+          instruction: "いくつかのコードを入力してください！",
+          resultStr: "結果"
+        }
+      };
+
+      app.logo = {
+        biwascheme: "biwascheme.png",
+        clojurescript: "clojurescript.png",
+        haste: "haskell.svg", // TODO: change the logo to the js one
+        js_of_ocaml: "js_of_ocaml.svg",
+        prologjs: "prolog.png", //  TODO: change the logo to the js one
+        scalajs: "scalajs.svg"
+      }
+
+      app.sample = {
+        biwascheme: {
+          hello_world: {
+            0: 'Hello World',
+            1: '(print "Hello world!")'
+          },
+          fibonacci: {
+            0: 'Fibonacci',
+            1: "(define (fib n)\n(if (< n 2) n (+ (fib (- n 1))\n(fib (- n 2)))))\n(fib 9)"
           }
-
-          app.sample = {
-            biwascheme: {
-              hello_world: '(print "Hello world!")',
-              fibonacci : "(define (fib n)\n(if (< n 2) n (+ (fib (- n 1))\n(fib (- n 2)))))\n(fib 9)"
-            }
+        },
+        haste: {
+          canvas: {
+            0: 'canvas simple',
+            1: 'import Haste\nimport Haste.Graphics.Canvas\nsquareShape :: Shape ()\nsquareShape = do\n  rect (-20, -20) (20, 20)\n  rect (-10, -10) (10, 10)\n  line (-20, -20) (20, 20)\nsquare :: Picture ()\nsquare = stroke squareShape\nfilledSquare :: Picture ()\nfilledSquare = fill squareShape\nmain :: IO ()\nmain = do\n  Just can <- getCanvasById "canvas"\n  animate can 0\nanimate :: Canvas -> Double -> IO ()\nanimate can angle = do\n  render can $ do\n    translate (160, 160) $ rotate angle $ do\n      square\n      translate (100, 100) . rotate (-angle) . color (RGB 255 0 0) $ filledSquare\n    color (RGBA 0 0 255 0.5) . font "20px Bitstream Vera" $ do\n      text (10, 160) "You can use transparency too!"\n  setTimer (Once 10) $ animate can (angle + 0.01)\n  return ()'
           }
+        }
+      }
 
-          var currentLanguage = document.documentElement.lang || "en";
-          var currentPgmLanguage = "biwascheme";
-          function gettext( key ) {
-            return app.lang[ key ] || app.translations.en[ key ] || "{translation key not found: " + key + "}";
-          }
+      var currentLanguage = document.documentElement.lang || "en";
+      var currentPgmLanguage = "biwascheme";
 
-          function getlogo( key ) {
-            return "logos/" + app.logo[ key ];
-          }
+      function gettext(key) {
+        return app.lang[key] || app.translations.en[key] || "{translation key not found: " + key + "}";
+      }
 
-          function getSample( sample ) {
-            return app.samples[sample];
-          }
+      function getlogo(key) {
+        return "logos/" + app.logo[key];
+      }
 
-        </script>
+      function getSample(sample) {
+        return app.samples[sample][1];
+      }
+    </script>
 
-        <div class="App-header">
-          <img class="App-logo" id="app-logo" alt="logo" style="height:105px" />
-          <h3 id="language-name" ></h3>
+    <div class="App-header">
+      <img class="App-logo" id="app-logo" alt="logo" style="height:105px" />
+      <h3 id="language-name"></h3>
 
-          <select id="lang-select" onchange="changeLang(this.value)">
+      <select id="lang-select" onchange="changeLang(this.value)">
             <option value="en">English</option>
             <option value="fr">Français</option>
             <option value="ja">日本語</option>
           </select>
 
-          <select id="pgm-lang-select" onchange="changePgmLang(this.value)">
+      <select id="pgm-lang-select" onchange="changePgmLang(this.value)">
             <option value="biwascheme">BiwaScheme</option>
             <option value="clojurescript">ClojureScript</option>
             <option value="haste">Haste</option>
@@ -98,145 +110,165 @@
             <option value="prologjs">prolog.js</option>
             <option value="scalajs">Scala.js</option>
           </select>
-        </div>
-        <p id="intro" class="App-intro"></p>
+    </div>
+    <p id="intro" class="App-intro"></p>
 
-        <script type="text/javascript" src="lang/biwascheme.js"></script>
-        <script >
-          function handleClick() {
-            var codeEntry = document.getElementById('code-entry');
-            var resultOutput = document.getElementById("result");
-            var code = codeEntry.value.toString();
-            if (code == "") {
-              resultOutput.value = code;
-            } else {
-                switch(currentPgmLanguage) {
-                  case "biwascheme": // biwascheme interpretation
-                    var bsconsole = document.getElementById("bs-console");
-                    while (bsconsole.firstChild) {
-                      bsconsole.removeChild(bsconsole.firstChild);
-                    }
-                    var biwascheme = new BiwaScheme.Interpreter(function(e, state) {
-                      $('output')[0].innerHTML += e.message;
-                    });
-                    var onError = function(e){ console.error(e); }
-                    var biwa = new BiwaScheme.Interpreter(onError)
-                    biwa.evaluate(code, function(result) {
-                      resultOutput.value = result;
-                    });
-                    break;
-                  case "clojurescript": // clojurescript interpretation
-                    // TODO: add the clojurescript interpretation
-                    break;
-                  case "haste": // haste interpretation
-                    var compilerUrl = "http://platy.eng.kagawa-u.ac.jp/WappenWeb/HasteCompiler";
-                    $(function () {
-                    		var source = $("#code-entry").val();
-                    		var name   = "user-input.hs";
-                    		var file   = new File([source], name);
-                    		var formData = new FormData();
-                    		formData.append(name, file);
-                    	    $.ajax({
-                    	        url: compilerUrl
-                    	    	, type: "POST"
-                    	    	, processData: false
-                    	    	, contentType: false
-                    	    	, data: formData
-                    	    }).done(function(data) {
-                    	    	console.log("success", data);
-                    	    	$("#result").val(data);
-                    	    }).fail(function(msg) {
-                    	    	console.log("failure", msg);
-                    	    });
+    <script type="text/javascript" src="lang/biwascheme.js"></script>
+    <script>
+      function handleClick() {
+        var codeEntry = document.getElementById('code-entry');
+        var resultOutput = document.getElementById("result");
+        var code = codeEntry.value.toString();
+        var bsconsole = document.getElementById("bs-console");
+        while (bsconsole.firstChild) {
+          bsconsole.removeChild(bsconsole.firstChild);
+        }
+        if (code == "") {
+          resultOutput.value = code;
+        } else {
+          switch (currentPgmLanguage) {
+            case "biwascheme": // biwascheme interpretation
+              var biwascheme = new BiwaScheme.Interpreter(function(e, state) {
+                $('output')[0].innerHTML += e.message;
+              });
+              var onError = function(e) {
+                console.error(e);
+              }
+              var biwa = new BiwaScheme.Interpreter(onError)
+              biwa.evaluate(code, function(result) {
+                resultOutput.value = result;
+              });
+              break;
+            case "clojurescript": // clojurescript interpretation
+              // TODO: add the clojurescript interpretation
+              break;
+            case "haste": // haste interpretation
+              var compilerUrl = "http://platy.eng.kagawa-u.ac.jp/WappenWeb/HasteCompiler";
+              $(function() {
+                var source = $("#code-entry").val();
+                var name = "user-input.hs";
+                var file = new File([source], name);
+                var formData = new FormData();
+                formData.append(name, file);
+                $.ajax({
+                  url: compilerUrl,
+                  type: "POST",
+                  processData: false,
+                  contentType: false,
+                  data: formData
+                }).done(function(data) {
+                  console.log("success", data);
+                  $("#result").val(data);
+                }).fail(function(msg) {
+                  console.log("failure", msg);
+                });
 
 
-                    		return false;
+                return false;
 
-                    });
-                    break;
-                  case "js_of_ocaml": // js_of_ocaml interpretation
-                    // TODO: add the js_of_ocaml interpretation
-                    break;
-                  case "prologjs": // prologjs interpretation
-                    // TODO: add the prologjs interpretation
-                    break;
-                  case "scalajs": // scalajs interpretation
-                    // TODO: add the scalajs interpretation
-                    break;
-                  default:
-                    // shouldn't be reached
-                    console.log("You shouldn't reach this part of the code!");
-                }
-            }
-            codeEntry.value = "";
+              });
+              break;
+            case "js_of_ocaml": // js_of_ocaml interpretation
+              // TODO: add the js_of_ocaml interpretation
+              break;
+            case "prologjs": // prologjs interpretation
+              // TODO: add the prologjs interpretation
+              break;
+            case "scalajs": // scalajs interpretation
+              // TODO: add the scalajs interpretation
+              break;
+            default:
+              // shouldn't be reached
+              console.log("You shouldn't reach this part of the code!");
           }
-        </script>
+        }
+        codeEntry.value = "";
+      }
+    </script>
 
-        <button id="run-button" type="Button" onClick="handleClick()">&#9658;</button>
+    <button id="run-button" type="Button" onClick="handleClick()">&#9658;</button>
 
-        <div class="App-content" id="app-content">
-          <div class="Code-area">
-            <textarea class="Code-entry" id="code-entry"></textarea>
-          </div>
-
-          <div class="Result-area">
-            <textarea class="Result" id="result" disabled="disabled"></textarea>
-          </div>
-
-          <div class="Extra-area">
-            <div class="Extra">
-              <div id="bs-console"></div>
-            </div>
-          </div>
-         </div>
-         <div>
-
-  <div>
-    <button type="Button" onClick="displaySample('hello_world')">Hello World</button>
-    <button type="Button" onClick="displaySample('fibonacci')">Fibonacci</button>
-  </div>
-        </div>
-
-        <script>
-          function displayStrings() {
-            app.lang = app.translations[ currentLanguage ] || app.translations.en;
-            document.getElementById("language-name").innerHTML = gettext(currentPgmLanguage);
-            document.getElementById("intro").innerHTML = gettext(currentPgmLanguage + "_intro");
-            document.getElementById("code-entry").placeholder = gettext("instruction");
-            document.getElementById("result").placeholder = gettext("resultStr");
-          }
-
-          function updateLogo() {
-            document.getElementById("app-logo").src = getlogo(currentPgmLanguage);
-          }
-
-          function initSamples() {
-            app.samples = app.sample[currentPgmLanguage] || app.sample.biwascheme;
-          }
-
-          function init() {
-            displayStrings();
-            updateLogo();
-            initSamples();
-          }
-
-
-          function changeLang(lang) {
-            currentLanguage = lang;
-            displayStrings();
-          }
-
-          function changePgmLang(lang) {
-            currentPgmLanguage = lang;
-            init();
-          }
-
-          function displaySample(sample) {
-            document.getElementById("code-entry").value = getSample(sample);
-          }
-
-          init();
-        </script>
+    <div class="App-content" id="app-content">
+      <div class="Code-area">
+        <textarea class="Code-entry" id="code-entry"></textarea>
       </div>
-  </body>
+
+      <div class="Result-area">
+        <textarea class="Result" id="result" disabled="disabled"></textarea>
+      </div>
+
+      <div class="Extra-area">
+        <div class="Extra">
+          <div id="bs-console"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="buttons-div"></div>
+    <script>
+      function displayStrings() {
+        app.lang = app.translations[currentLanguage] || app.translations.en;
+        document.getElementById("language-name").innerHTML = gettext(currentPgmLanguage);
+        document.getElementById("intro").innerHTML = gettext(currentPgmLanguage + "_intro");
+        document.getElementById("code-entry").placeholder = gettext("instruction");
+        document.getElementById("result").placeholder = gettext("resultStr");
+      }
+
+      function updateLogo() {
+        document.getElementById("app-logo").src = getlogo(currentPgmLanguage);
+      }
+
+      function initSamples() {
+        app.samples = app.sample[currentPgmLanguage];
+      }
+
+      function init() {
+        displayStrings();
+        updateLogo();
+        initSamples();
+        displayButtons();
+      }
+
+
+      function changeLang(lang) {
+        currentLanguage = lang;
+        displayStrings();
+      }
+
+      function changePgmLang(lang) {
+        currentPgmLanguage = lang;
+        init();
+      }
+
+      function displaySample(sample) {
+        document.getElementById("code-entry").value = getSample(sample);
+      }
+
+      init();
+
+      function displayButtons() {
+        var buttons = document.getElementById("buttons-div");
+
+        // clears the buttons area
+        while (buttons.firstChild) {
+          buttons.removeChild(buttons.firstChild);
+        }
+
+        var samples = app.samples; // samples of the current language
+
+        // creates a button for each sample
+        for (var s in samples) {
+          var button = document.createElement("button");
+          let sampleToLoad = s;
+          button.innerHTML = samples[s][0];
+          button.addEventListener("click", function() {
+            displaySample(sampleToLoad);
+          });
+          buttons.appendChild(button);
+        }
+      }
+    </script>
+  </div>
+</body>
+
 </html>
