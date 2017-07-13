@@ -119,15 +119,17 @@
         var codeEntry = document.getElementById('code-entry');
         var resultOutput = document.getElementById("result");
         var code = codeEntry.value.toString();
-        var bsconsole = document.getElementById("bs-console");
-        while (bsconsole.firstChild) {
-          bsconsole.removeChild(bsconsole.firstChild);
-        }
+        var extra = document.getElementById("extra");
+        clearScreenResults();
         if (code == "") {
           resultOutput.value = code;
         } else {
           switch (currentPgmLanguage) {
             case "biwascheme": // biwascheme interpretation
+              var consoleElement = document.createElement("div");
+              consoleElement.setAttribute("id", 'bs-console');
+              extra.appendChild(consoleElement);
+
               var biwascheme = new BiwaScheme.Interpreter(function(e, state) {
                 $('output')[0].innerHTML += e.message;
               });
@@ -145,7 +147,7 @@
             case "haste": // haste interpretation
               var compilerUrl = "http://platy.eng.kagawa-u.ac.jp/WappenWeb/HasteCompiler";
               $(function() {
-                var source = $("#code-entry").val();
+                var source = code;
                 var name = "user-input.hs";
                 var file = new File([source], name);
                 var formData = new FormData();
@@ -157,8 +159,34 @@
                   contentType: false,
                   data: formData
                 }).done(function(data) {
-                  console.log("success", data);
+                  console.log("success");
                   $("#result").val(data);
+
+                  // creates the canvas to diplay the result
+                  var canvas = document.createElement("canvas");
+                  canvas.setAttribute("id", 'canvas');
+                  canvas.setAttribute("style", "border: 1px solid black;");
+                  canvas.setAttribute("width", "320");
+                  canvas.setAttribute("height", "320");
+                  extra.appendChild(canvas);
+
+                  // creates the script from js code returned by haste
+                  var script = document.createElement("script");
+                  script.innerHTML = data;
+                  extra.appendChild(script);
+
+                  // script to call the main function of the previous script
+                  var s = document.createElement('script');
+                  s.type = 'text/javascript';
+                  var code = 'hasteMain();';
+                  try {
+                    s.appendChild(document.createTextNode(code));
+                    document.body.appendChild(s);
+                  } catch (e) {
+                    s.text = code;
+                    extra.appendChild(s);
+                  }
+
                 }).fail(function(msg) {
                   console.log("failure", msg);
                 });
@@ -182,7 +210,6 @@
               console.log("You shouldn't reach this part of the code!");
           }
         }
-        codeEntry.value = "";
       }
     </script>
 
@@ -198,9 +225,7 @@
       </div>
 
       <div class="Extra-area">
-        <div class="Extra">
-          <div id="bs-console"></div>
-        </div>
+        <div id="extra" class="Extra"></div>
       </div>
     </div>
 
@@ -238,6 +263,7 @@
       function changePgmLang(lang) {
         currentPgmLanguage = lang;
         init();
+        clearScreenResults();
       }
 
       function displaySample(sample) {
@@ -265,6 +291,17 @@
             displaySample(sampleToLoad);
           });
           buttons.appendChild(button);
+        }
+      }
+
+      function clearScreenResults() {
+        var codeEntry = document.getElementById('code-entry');
+        var resultOutput = document.getElementById("result");
+        var extra = document.getElementById("extra");
+        codeEntry.value = "";
+        resultOutput.value = "";
+        while (extra.firstChild) {
+          extra.removeChild(extra.firstChild);
         }
       }
     </script>
