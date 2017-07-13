@@ -1,1 +1,0 @@
-# AltJS Languages and Graphics
