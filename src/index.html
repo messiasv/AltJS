@@ -19,32 +19,46 @@
           clojurescript: "ClojureScript",
           haste: "Haste",
           js_of_ocaml: "Js_of_ocaml",
-          prologjs: "prolog.js",
+          jsprolog: "jsprolog",
           scalajs: "Scala.js",
 
           biwascheme_intro: "BiwaScheme is a Scheme interpreter written in JavaScript.",
           clojurescript_intro: "ClojureScript is a compiler for Clojure that targets JavaScript.",
           haste_intro: "Haste is a compiler generating JavaScript code from Haskell.",
           js_of_ocaml_intro: "Js_of_ocaml is a compiler of OCaml bytecode to Javascript. It makes it possible to run Ocaml programs in a Web browser.",
-          prologjs_intro: "prolog.js is a Prolog parser, compiler and interpreter written in Javascript.",
+          jsprolog_intro: "jsprolog is a Prolog parser, compiler and interpreter written in Javascript.",
           scalajs_intro: "Scala.js is a Scala to JavaScript compiler.",
 
           instruction: "Please type in some code!",
+          query: "Please enter a query!",
           resultStr: "Result"
         },
         fr: {
           biwascheme_intro: "Biwascheme est un interpréteur du langage Scheme, écrit en JavaScript.",
-          prologjs_intro: "prolog.js est un parseur, compilateur et interpréteur du langage Prolog, écrit en Javascript.",
+          haste_intro: "Haste est un compilateur générant du code JavaScript depuis Haskell.",
+          jsprolog_intro: "jsprolog est un parseur, compilateur et interpréteur du langage Prolog, écrit en Javascript.",
 
           instruction: "Merci d'entrer du code!",
+          query: "Merci d'entrer une requête!",
           resultStr: "Résultat"
         },
         ja: {
           biwascheme_intro: "BiwaScheme は JavaScript で 書かれた Scheme インタプリタです。",
-          prologjs_intro: "prolog.js は Javascript で 書かれた Prolog パーサ、コンパイラ、インタプリタです。",
+          haste_intro: "Haste は、Haskell から JavaScript コードを生成するコンパイラです。",
+          jsprolog_intro: "jsprolog は Javascript で 書かれた Prolog パーサ、コンパイラ、インタプリタです。",
 
-          instruction: "いくつかのコードを入力してください！",
+          instruction: "コードを入力してください！",
+          query: "クエリを入力してください！",
           resultStr: "結果"
+        },
+        pt: {
+          biwascheme_intro: "BiwaScheme é um interpretador Scheme escrito em JavaScript.",
+          haste_intro: "Haste é um compilador que gera código JavaScript da Haskell.",
+          jsprolog_intro: "jsprolog é um analisador Prolog, compilador e intérprete escrito em Javascript.",
+
+          instruction: "Por favor, introduza código!",
+          query: "Por favor, indique uma consulta!",
+          resultStr: "Resultado"
         }
       };
 
@@ -53,7 +67,7 @@
         clojurescript: "clojurescript.png",
         haste: "haskell.svg", // TODO: change the logo to the js one
         js_of_ocaml: "js_of_ocaml.svg",
-        prologjs: "prolog.png", //  TODO: change the logo to the js one
+        jsprolog: "prolog.png", //  TODO: change the logo to the js one
         scalajs: "scalajs.svg"
       }
 
@@ -73,6 +87,13 @@
             0: 'canvas simple',
             1: 'import Haste\nimport Haste.Graphics.Canvas\nsquareShape :: Shape ()\nsquareShape = do\n  rect (-20, -20) (20, 20)\n  rect (-10, -10) (10, 10)\n  line (-20, -20) (20, 20)\nsquare :: Picture ()\nsquare = stroke squareShape\nfilledSquare :: Picture ()\nfilledSquare = fill squareShape\nmain :: IO ()\nmain = do\n  Just can <- getCanvasById "canvas"\n  animate can 0\nanimate :: Canvas -> Double -> IO ()\nanimate can angle = do\n  render can $ do\n    translate (160, 160) $ rotate angle $ do\n      square\n      translate (100, 100) . rotate (-angle) . color (RGB 255 0 0) $ filledSquare\n    color (RGBA 0 0 255 0.5) . font "20px Bitstream Vera" $ do\n      text (10, 160) "You can use transparency too!"\n  setTimer (Once 10) $ animate can (angle + 0.01)\n  return ()'
           }
+        },
+        jsprolog: {
+          elements: {
+            0: 'elements',
+            1: '# Enter your ruleset in here.\ntriple(sc, a, b).\ntriple(sc, b, c).\ntriple(sc, c, d).\ntriple(sc, d, e).\ntriple(sc, e, f).\ntriple(sc, f, g).\ntriple(type, sc, transitive).\ntriple(P, X, Y) :- NOTTHIS triple(type, P, transitive), NOTTHIS triple(P, X, Z), triple(P, Z, Y).\narcsOut(X, L) :- bagof(O, triple(P, X, O), L).\n### Accumulated standard library lives under here!\n# unification and ( x, y, z; w ) support\nunify(X, X).\n# ( a, b, c ) --> conjunction([a, b, c])\nconjunction([]).\nconjunction([X | Rest]) :- call(X), conjunction(Rest).\n# ( a; b; c ) --> disjunction([a, b, c])\ndisjunction([X | Rest]) :- call(X).\ndisjunction([X | Rest]) :- disjunction(Rest).\n# Arithmetic\nadd(A, B, C) :- external("$1 + $2", [A, B], C).   # A + B = C, etc.\nsub(A, B, C) :- external("$1 - $2", [A, B], C).\nmul(A, B, C) :- external("$1 * $2", [A, B], C).\ndiv(A, B, C) :- external("$1 / $2", [A, B], C).\n# The canonical quicksort\nqsort([], []).\nqsort([X|Rest], Answer) :- partition(X, Rest, [], Before, [], After), qsort(Before, Bsort), qsort(After, Asort), append(Bsort, [X | Asort], Answer).\npartition(X, [], Before, Before, After, After).\npartition(X, [Y | Rest], B, [Y | Brest], A, Arest) :- leq(X, Y), partition(X, Rest, B, Brest, A, Arest).\npartition(X, [Y | Rest], B, Brest, A, [Y | Arest]) :- gtr(X, Y), partition(X, Rest, B, Brest, A, Arest).\nleq(X, Y) :- compare(X, Y, gt).\nleq(X, Y) :- compare(X, Y, eq).\ngtr(X, Y) :- compare(X, Y, lt).\n# Some list-processing stuff...\nappend([], Z, Z).\nappend([A|B], Z, [A|ZZ]) :- append(B, Z, ZZ).\nreverse([], []).\nreverse([A|B], Z) :- reverse(B, Brev), append(Brev, [A], Z).\nlength([], 0).\nlength([H|T], N) :- length(T, M), add(M, 1, N).\n# Standard prolog not/1\nnot(Term) :- call(Term), !, fail.\nnot(Term).\n# Standard prolog var/1\nvar(X) :- bagof(l, varTest(X), [l, l]).\nvarTest(a).\ntarTest(b).',
+            2: 'bagof(c, triple(sc, A, B), L), length(L, N) # L should have 21 elements'
+          }
         }
       }
 
@@ -87,8 +108,8 @@
         return "logos/" + app.logo[key];
       }
 
-      function getSample(sample) {
-        return app.samples[sample][1];
+      function getSample(sample, i) {
+        return app.samples[sample][i];
       }
     </script>
 
@@ -100,15 +121,16 @@
             <option value="en">English</option>
             <option value="fr">Français</option>
             <option value="ja">日本語</option>
+            <option value="pt">Português</option>
           </select>
 
       <select id="pgm-lang-select" onchange="changePgmLang(this.value)">
             <option value="biwascheme">BiwaScheme</option>
             <!-- <option value="clojurescript">ClojureScript</option> -->
             <option value="haste">Haste</option>
-            <!-- <option value="js_of_ocaml">Js_of_ocaml</option>
-            <option value="prologjs">prolog.js</option>
-            <option value="scalajs">Scala.js</option> -->
+            <!-- <option value="js_of_ocaml">Js_of_ocaml</option> -->
+            <option value="jsprolog">jsprolog</option>
+            <!-- <option value="scalajs">Scala.js</option> -->
           </select>
     </div>
     <p id="intro" class="App-intro"></p>
@@ -118,9 +140,14 @@
       function handleClick() {
         var codeEntry = document.getElementById('code-entry');
         var resultOutput = document.getElementById("result");
-        var code = codeEntry.value.toString();
+        var extraInputs = document.getElementById("extra-inputs");
+        var code = codeEntry.value;
         var extra = document.getElementById("extra");
-        clearScreenResults();
+        clearResults();
+        if (extraInputs.firstChild) {
+            var extraField = document.getElementById("extra-text-entry");
+            var extraFieldValue = extraField.value;
+        }
         if (code == "") {
           resultOutput.value = code;
         } else {
@@ -159,7 +186,6 @@
                   contentType: false,
                   data: formData
                 }).done(function(data) {
-                  console.log("success");
                   $("#result").val(data);
 
                   // creates the canvas to diplay the result
@@ -199,8 +225,8 @@
             case "js_of_ocaml": // js_of_ocaml interpretation
               // TODO: add the js_of_ocaml interpretation
               break;
-            case "prologjs": // prologjs interpretation
-              // TODO: add the prologjs interpretation
+            case "jsprolog": // jsprolog interpretation
+              freeform(code, extraFieldValue);
               break;
             case "scalajs": // scalajs interpretation
               // TODO: add the scalajs interpretation
@@ -210,6 +236,7 @@
               console.log("You shouldn't reach this part of the code!");
           }
         }
+        clearInputs();
       }
     </script>
 
@@ -218,6 +245,7 @@
     <div class="App-content" id="app-content">
       <div class="Code-area">
         <textarea class="Code-entry" id="code-entry"></textarea>
+        <div id="extra-inputs"></div>
       </div>
 
       <div class="Result-area">
@@ -230,12 +258,16 @@
     </div>
 
     <div id="buttons-div"></div>
+    <script type="text/javascript" src="lang/jsprolog.js"></script>
     <script>
       function displayStrings() {
         app.lang = app.translations[currentLanguage] || app.translations.en;
         document.getElementById("language-name").innerHTML = gettext(currentPgmLanguage);
         document.getElementById("intro").innerHTML = gettext(currentPgmLanguage + "_intro");
         document.getElementById("code-entry").placeholder = gettext("instruction");
+        if (document.getElementById("extra-inputs").firstChild) {
+          document.getElementById("extra-text-entry").placeholder = gettext("query");
+        }
         document.getElementById("result").placeholder = gettext("resultStr");
       }
 
@@ -248,6 +280,8 @@
       }
 
       function init() {
+        clearExtraInputFields();
+        displayExtraInputs();
         displayStrings();
         updateLogo();
         initSamples();
@@ -263,14 +297,27 @@
       function changePgmLang(lang) {
         currentPgmLanguage = lang;
         init();
-        clearScreenResults();
+        clearDisplays();
+      }
+
+      function displayExtraInputs() {
+        if (currentPgmLanguage == "jsprolog") {
+          var extraInputs = document.getElementById("extra-inputs");
+          var extraTextArea = document.createElement("textarea");
+          extraTextArea.setAttribute("id", "extra-text-entry");
+          extraTextArea.setAttribute("class", "Extra-text-area");
+          extraInputs.appendChild(document.createElement("br"));
+          extraInputs.appendChild(extraTextArea);
+        }
       }
 
       function displaySample(sample) {
-        document.getElementById("code-entry").value = getSample(sample);
+        document.getElementById("code-entry").value = getSample(sample, 1);
+        if(document.getElementById("extra-inputs").firstChild) {
+          document.getElementById("extra-text-entry").value = getSample(sample, 2);
+        }
       }
 
-      init();
 
       function displayButtons() {
         var buttons = document.getElementById("buttons-div");
@@ -294,16 +341,40 @@
         }
       }
 
-      function clearScreenResults() {
+      function clearDisplays() {
+        clearInputs();
+        clearResults();
+      }
+
+      function clearInputs() {
         var codeEntry = document.getElementById('code-entry');
-        var resultOutput = document.getElementById("result");
-        var extra = document.getElementById("extra");
+        var extraInputs = document.getElementById("extra-inputs");
         codeEntry.value = "";
+        if (extraInputs.firstChild) {
+          var extraTextEntry = document.getElementById("extra-text-entry");
+          extraTextEntry.value = "";
+        }
+
+      }
+
+      function clearResults() {
+        var resultOutput = document.getElementById("result");
         resultOutput.value = "";
+        var extra = document.getElementById("extra");
         while (extra.firstChild) {
           extra.removeChild(extra.firstChild);
         }
       }
+
+      function clearExtraInputFields() {
+        var extraInputs = document.getElementById("extra-inputs");
+        while (extraInputs.firstChild) {
+          extraInputs.removeChild(extraInputs.firstChild);
+        }
+      }
+      // launched at the first creation of the page
+      document.getElementById("pgm-lang-select").value = currentPgmLanguage;
+      init();
     </script>
   </div>
 </body>

@@ -25,9 +25,10 @@
   flex: 1 100%;
   height: 50vh;
   display: flex;
+  flex-direction: column;
 }
 
-.Code-entry, .Result {
+.Code-entry, .Extra-text-area, .Result {
   height: 95%;
   width: 95%;
   margin: auto;
