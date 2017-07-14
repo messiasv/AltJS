@@ -74,6 +74,13 @@
             0: 'canvas simple',
             1: 'import Haste\nimport Haste.Graphics.Canvas\nsquareShape :: Shape ()\nsquareShape = do\n  rect (-20, -20) (20, 20)\n  rect (-10, -10) (10, 10)\n  line (-20, -20) (20, 20)\nsquare :: Picture ()\nsquare = stroke squareShape\nfilledSquare :: Picture ()\nfilledSquare = fill squareShape\nmain :: IO ()\nmain = do\n  Just can <- getCanvasById "canvas"\n  animate can 0\nanimate :: Canvas -> Double -> IO ()\nanimate can angle = do\n  render can $ do\n    translate (160, 160) $ rotate angle $ do\n      square\n      translate (100, 100) . rotate (-angle) . color (RGB 255 0 0) $ filledSquare\n    color (RGBA 0 0 255 0.5) . font "20px Bitstream Vera" $ do\n      text (10, 160) "You can use transparency too!"\n  setTimer (Once 10) $ animate can (angle + 0.01)\n  return ()'
           }
+        },
+        jsprolog: {
+          elements: {
+            0: 'elements',
+            1: '# Enter your ruleset in here.\ntriple(sc, a, b).\ntriple(sc, b, c).\ntriple(sc, c, d).\ntriple(sc, d, e).\ntriple(sc, e, f).\ntriple(sc, f, g).\ntriple(type, sc, transitive).\ntriple(P, X, Y) :- NOTTHIS triple(type, P, transitive), NOTTHIS triple(P, X, Z), triple(P, Z, Y).\narcsOut(X, L) :- bagof(O, triple(P, X, O), L).\n### Accumulated standard library lives under here!\n# unification and ( x, y, z; w ) support\nunify(X, X).\n# ( a, b, c ) --> conjunction([a, b, c])\nconjunction([]).\nconjunction([X | Rest]) :- call(X), conjunction(Rest).\n# ( a; b; c ) --> disjunction([a, b, c])\ndisjunction([X | Rest]) :- call(X).\ndisjunction([X | Rest]) :- disjunction(Rest).\n# Arithmetic\nadd(A, B, C) :- external("$1 + $2", [A, B], C).   # A + B = C, etc.\nsub(A, B, C) :- external("$1 - $2", [A, B], C).\nmul(A, B, C) :- external("$1 * $2", [A, B], C).\ndiv(A, B, C) :- external("$1 / $2", [A, B], C).\n# The canonical quicksort\nqsort([], []).\nqsort([X|Rest], Answer) :- partition(X, Rest, [], Before, [], After), qsort(Before, Bsort), qsort(After, Asort), append(Bsort, [X | Asort], Answer).\npartition(X, [], Before, Before, After, After).\npartition(X, [Y | Rest], B, [Y | Brest], A, Arest) :- leq(X, Y), partition(X, Rest, B, Brest, A, Arest).\npartition(X, [Y | Rest], B, Brest, A, [Y | Arest]) :- gtr(X, Y), partition(X, Rest, B, Brest, A, Arest).\nleq(X, Y) :- compare(X, Y, gt).\nleq(X, Y) :- compare(X, Y, eq).\ngtr(X, Y) :- compare(X, Y, lt).\n# Some list-processing stuff...\nappend([], Z, Z).\nappend([A|B], Z, [A|ZZ]) :- append(B, Z, ZZ).\nreverse([], []).\nreverse([A|B], Z) :- reverse(B, Brev), append(Brev, [A], Z).\nlength([], 0).\nlength([H|T], N) :- length(T, M), add(M, 1, N).\n# Standard prolog not/1\nnot(Term) :- call(Term), !, fail.\nnot(Term).\n# Standard prolog var/1\nvar(X) :- bagof(l, varTest(X), [l, l]).\nvarTest(a).\ntarTest(b).',
+            2: 'bagof(c, triple(sc, A, B), L), length(L, N) # L should have 21 elements'
+          }
         }
       }
 
@@ -88,8 +95,8 @@
         return "logos/" + app.logo[key];
       }
 
-      function getSample(sample) {
-        return app.samples[sample][1];
+      function getSample(sample, i) {
+        return app.samples[sample][i];
       }
     </script>
 
@@ -292,7 +299,10 @@
       }
 
       function displaySample(sample) {
-        document.getElementById("code-entry").value = getSample(sample);
+        document.getElementById("code-entry").value = getSample(sample, 1);
+        if(document.getElementById("extra-inputs").firstChild) {
+          document.getElementById("extra-text-entry").value = getSample(sample, 2);
+        }
       }
 
 
