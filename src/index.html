@@ -19,29 +19,30 @@
           clojurescript: "ClojureScript",
           haste: "Haste",
           js_of_ocaml: "Js_of_ocaml",
-          prologjs: "prolog.js",
+          jsprolog: "jsprolog",
           scalajs: "Scala.js",
 
           biwascheme_intro: "BiwaScheme is a Scheme interpreter written in JavaScript.",
           clojurescript_intro: "ClojureScript is a compiler for Clojure that targets JavaScript.",
           haste_intro: "Haste is a compiler generating JavaScript code from Haskell.",
           js_of_ocaml_intro: "Js_of_ocaml is a compiler of OCaml bytecode to Javascript. It makes it possible to run Ocaml programs in a Web browser.",
-          prologjs_intro: "prolog.js is a Prolog parser, compiler and interpreter written in Javascript.",
+          jsprolog_intro: "jsprolog is a Prolog parser, compiler and interpreter written in Javascript.",
           scalajs_intro: "Scala.js is a Scala to JavaScript compiler.",
 
           instruction: "Please type in some code!",
+          query: "Please enter your query!",
           resultStr: "Result"
         },
         fr: {
           biwascheme_intro: "Biwascheme est un interpréteur du langage Scheme, écrit en JavaScript.",
-          prologjs_intro: "prolog.js est un parseur, compilateur et interpréteur du langage Prolog, écrit en Javascript.",
+          jsprolog_intro: "jsprolog est un parseur, compilateur et interpréteur du langage Prolog, écrit en Javascript.",
 
           instruction: "Merci d'entrer du code!",
           resultStr: "Résultat"
         },
         ja: {
           biwascheme_intro: "BiwaScheme は JavaScript で 書かれた Scheme インタプリタです。",
-          prologjs_intro: "prolog.js は Javascript で 書かれた Prolog パーサ、コンパイラ、インタプリタです。",
+          jsprolog_intro: "jsprolog は Javascript で 書かれた Prolog パーサ、コンパイラ、インタプリタです。",
 
           instruction: "いくつかのコードを入力してください！",
           resultStr: "結果"
@@ -53,7 +54,7 @@
         clojurescript: "clojurescript.png",
         haste: "haskell.svg", // TODO: change the logo to the js one
         js_of_ocaml: "js_of_ocaml.svg",
-        prologjs: "prolog.png", //  TODO: change the logo to the js one
+        jsprolog: "prolog.png", //  TODO: change the logo to the js one
         scalajs: "scalajs.svg"
       }
 
@@ -107,7 +108,7 @@
             <option value="clojurescript">ClojureScript</option>
             <option value="haste">Haste</option>
             <option value="js_of_ocaml">Js_of_ocaml</option>
-            <option value="prologjs">prolog.js</option>
+            <option value="jsprolog">jsprolog</option>
             <option value="scalajs">Scala.js</option>
           </select>
     </div>
@@ -118,9 +119,14 @@
       function handleClick() {
         var codeEntry = document.getElementById('code-entry');
         var resultOutput = document.getElementById("result");
-        var code = codeEntry.value.toString();
+        var extraInputs = document.getElementById("extra-inputs");
+        var code = codeEntry.value;
         var extra = document.getElementById("extra");
-        clearScreenResults();
+        clearResults();
+        if (extraInputs.firstChild) {
+            var extraField = document.getElementById("extra-text-entry");
+            var extraFieldValue = extraField.value;
+        }
         if (code == "") {
           resultOutput.value = code;
         } else {
@@ -199,8 +205,8 @@
             case "js_of_ocaml": // js_of_ocaml interpretation
               // TODO: add the js_of_ocaml interpretation
               break;
-            case "prologjs": // prologjs interpretation
-              // TODO: add the prologjs interpretation
+            case "jsprolog": // jsprolog interpretation
+              freeform(code, extraFieldValue);
               break;
             case "scalajs": // scalajs interpretation
               // TODO: add the scalajs interpretation
@@ -210,6 +216,7 @@
               console.log("You shouldn't reach this part of the code!");
           }
         }
+        clearInputs();
       }
     </script>
 
@@ -218,6 +225,7 @@
     <div class="App-content" id="app-content">
       <div class="Code-area">
         <textarea class="Code-entry" id="code-entry"></textarea>
+        <div id="extra-inputs"></div>
       </div>
 
       <div class="Result-area">
@@ -230,12 +238,16 @@
     </div>
 
     <div id="buttons-div"></div>
+    <script type="text/javascript" src="lang/jsprolog.js"></script>
     <script>
       function displayStrings() {
         app.lang = app.translations[currentLanguage] || app.translations.en;
         document.getElementById("language-name").innerHTML = gettext(currentPgmLanguage);
         document.getElementById("intro").innerHTML = gettext(currentPgmLanguage + "_intro");
         document.getElementById("code-entry").placeholder = gettext("instruction");
+        if (document.getElementById("extra-inputs").firstChild) {
+          document.getElementById("extra-text-entry").placeholder = gettext("query");
+        }
         document.getElementById("result").placeholder = gettext("resultStr");
       }
 
@@ -248,6 +260,8 @@
       }
 
       function init() {
+        clearExtraInputFields();
+        displayExtraInputs();
         displayStrings();
         updateLogo();
         initSamples();
@@ -263,14 +277,24 @@
       function changePgmLang(lang) {
         currentPgmLanguage = lang;
         init();
-        clearScreenResults();
+        clearDisplays();
+      }
+
+      function displayExtraInputs() {
+        if (currentPgmLanguage == "jsprolog") {
+          var extraInputs = document.getElementById("extra-inputs");
+          var extraTextArea = document.createElement("textarea");
+          extraTextArea.setAttribute("id", "extra-text-entry");
+          extraTextArea.setAttribute("class", "Extra-text-area");
+          extraInputs.appendChild(document.createElement("br"));
+          extraInputs.appendChild(extraTextArea);
+        }
       }
 
       function displaySample(sample) {
         document.getElementById("code-entry").value = getSample(sample);
       }
 
-      init();
 
       function displayButtons() {
         var buttons = document.getElementById("buttons-div");
@@ -294,16 +318,40 @@
         }
       }
 
-      function clearScreenResults() {
+      function clearDisplays() {
+        clearInputs();
+        clearResults();
+      }
+
+      function clearInputs() {
         var codeEntry = document.getElementById('code-entry');
-        var resultOutput = document.getElementById("result");
-        var extra = document.getElementById("extra");
+        var extraInputs = document.getElementById("extra-inputs");
         codeEntry.value = "";
+        if (extraInputs.firstChild) {
+          var extraTextEntry = document.getElementById("extra-text-entry");
+          extraTextEntry.value = "";
+        }
+
+      }
+
+      function clearResults() {
+        var resultOutput = document.getElementById("result");
         resultOutput.value = "";
+        var extra = document.getElementById("extra");
         while (extra.firstChild) {
           extra.removeChild(extra.firstChild);
         }
       }
+
+      function clearExtraInputFields() {
+        var extraInputs = document.getElementById("extra-inputs");
+        while (extraInputs.firstChild) {
+          extraInputs.removeChild(extraInputs.firstChild);
+        }
+      }
+      // launched at the first creation of the page
+      document.getElementById("pgm-lang-select").value = currentPgmLanguage;
+      init();
     </script>
   </div>
 </body>
