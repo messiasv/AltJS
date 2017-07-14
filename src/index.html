@@ -30,22 +30,35 @@
           scalajs_intro: "Scala.js is a Scala to JavaScript compiler.",
 
           instruction: "Please type in some code!",
-          query: "Please enter your query!",
+          query: "Please enter a query!",
           resultStr: "Result"
         },
         fr: {
           biwascheme_intro: "Biwascheme est un interpréteur du langage Scheme, écrit en JavaScript.",
+          haste_intro: "Haste est un compilateur générant du code JavaScript depuis Haskell.",
           jsprolog_intro: "jsprolog est un parseur, compilateur et interpréteur du langage Prolog, écrit en Javascript.",
 
           instruction: "Merci d'entrer du code!",
+          query: "Merci d'entrer une requête!",
           resultStr: "Résultat"
         },
         ja: {
           biwascheme_intro: "BiwaScheme は JavaScript で 書かれた Scheme インタプリタです。",
+          haste_intro: "Haste は、Haskell から JavaScript コードを生成するコンパイラです。",
           jsprolog_intro: "jsprolog は Javascript で 書かれた Prolog パーサ、コンパイラ、インタプリタです。",
 
-          instruction: "いくつかのコードを入力してください！",
+          instruction: "コードを入力してください！",
+          query: "クエリを入力してください！",
           resultStr: "結果"
+        },
+        pt: {
+          biwascheme_intro: "BiwaScheme é um interpretador Scheme escrito em JavaScript.",
+          haste_intro: "Haste é um compilador que gera código JavaScript da Haskell.",
+          jsprolog_intro: "jsprolog é um analisador Prolog, compilador e intérprete escrito em Javascript.",
+
+          instruction: "Por favor, introduza código!",
+          query: "Por favor, indique uma consulta!",
+          resultStr: "Resultado"
         }
       };
 
@@ -108,6 +121,7 @@
             <option value="en">English</option>
             <option value="fr">Français</option>
             <option value="ja">日本語</option>
+            <option value="pt">Português</option>
           </select>
 
       <select id="pgm-lang-select" onchange="changePgmLang(this.value)">
