@@ -6,6 +6,7 @@
   <title>AltJS</title>
   <link rel="stylesheet" type="text/css" href="./style.css" />
   <link type="text/javascript" href="lang/biwascheme.js" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 
 <body>
@@ -31,6 +32,7 @@
 
           instruction: "Please type in some code!",
           query: "Please enter a query!",
+          checkbox: "Show parsing results",
           resultStr: "Result"
         },
         fr: {
@@ -40,6 +42,7 @@
 
           instruction: "Merci d'entrer du code!",
           query: "Merci d'entrer une requête!",
+          checkbox: "Afficher les résultats de l'analyse syntaxique",
           resultStr: "Résultat"
         },
         ja: {
@@ -49,6 +52,7 @@
 
           instruction: "コードを入力してください！",
           query: "クエリを入力してください！",
+          checkbox: "構文解析の結果を表示する",
           resultStr: "結果"
         },
         pt: {
@@ -58,6 +62,7 @@
 
           instruction: "Por favor, introduza código!",
           query: "Por favor, indique uma consulta!",
+          checkbox: "Mostrar os resultados da análise sintática",
           resultStr: "Resultado"
         }
       };
@@ -267,6 +272,12 @@
         document.getElementById("code-entry").placeholder = gettext("instruction");
         if (document.getElementById("extra-inputs").firstChild) {
           document.getElementById("extra-text-entry").placeholder = gettext("query");
+          var label = document.getElementById("checkbox-label");
+          if(!label.firstChild){
+            label.appendChild(document.createTextNode(gettext("checkbox")));
+          } else {
+            label.innerHTML = gettext("checkbox");
+          }
         }
         document.getElementById("result").placeholder = gettext("resultStr");
       }
@@ -306,8 +317,16 @@
           var extraTextArea = document.createElement("textarea");
           extraTextArea.setAttribute("id", "extra-text-entry");
           extraTextArea.setAttribute("class", "Extra-text-area");
+          var checkbox = document.createElement("input");
+          checkbox.setAttribute("id", "extra-checkbox");
+          checkbox.setAttribute("type", "checkbox");
+          var label = document.createElement("label");
+          label.setAttribute("id", "checkbox-label");
+          label.setAttribute("for", "extra-checkbox");
           extraInputs.appendChild(document.createElement("br"));
           extraInputs.appendChild(extraTextArea);
+          extraInputs.appendChild(checkbox);
+          extraInputs.appendChild(label);
         }
       }
 
