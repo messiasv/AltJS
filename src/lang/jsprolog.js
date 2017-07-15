@@ -1,6 +1,5 @@
 <!--
 	var outputField = document.getElementById("result");
-	var show = true; // for now, we always show the parse results
 
 
 
@@ -9,6 +8,7 @@
 
 		var rules = rules;
 		var query = query;
+		var show = document.getElementById("extra-checkbox").checked;
 		cls();
 		print ("Parsing rulesets.\n");
 

@@ -72,3 +72,7 @@
 #run-button {
   color: green;
 }
+
+#extra-text-entry {
+  display: block;
+}
