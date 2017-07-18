@@ -89,15 +89,20 @@
         },
         haste: {
           canvas: {
-            0: 'canvas simple',
+            0: 'Canvas Simple',
             1: 'import Haste\nimport Haste.Graphics.Canvas\nsquareShape :: Shape ()\nsquareShape = do\n  rect (-20, -20) (20, 20)\n  rect (-10, -10) (10, 10)\n  line (-20, -20) (20, 20)\nsquare :: Picture ()\nsquare = stroke squareShape\nfilledSquare :: Picture ()\nfilledSquare = fill squareShape\nmain :: IO ()\nmain = do\n  Just can <- getCanvasById "canvas"\n  animate can 0\nanimate :: Canvas -> Double -> IO ()\nanimate can angle = do\n  render can $ do\n    translate (160, 160) $ rotate angle $ do\n      square\n      translate (100, 100) . rotate (-angle) . color (RGB 255 0 0) $ filledSquare\n    color (RGBA 0 0 255 0.5) . font "20px Bitstream Vera" $ do\n      text (10, 160) "You can use transparency too!"\n  setTimer (Once 10) $ animate can (angle + 0.01)\n  return ()'
           }
         },
         jsprolog: {
           elements: {
-            0: 'elements',
+            0: 'Elements',
             1: '# Enter your ruleset in here.\ntriple(sc, a, b).\ntriple(sc, b, c).\ntriple(sc, c, d).\ntriple(sc, d, e).\ntriple(sc, e, f).\ntriple(sc, f, g).\ntriple(type, sc, transitive).\ntriple(P, X, Y) :- NOTTHIS triple(type, P, transitive), NOTTHIS triple(P, X, Z), triple(P, Z, Y).\narcsOut(X, L) :- bagof(O, triple(P, X, O), L).\n### Accumulated standard library lives under here!\n# unification and ( x, y, z; w ) support\nunify(X, X).\n# ( a, b, c ) --> conjunction([a, b, c])\nconjunction([]).\nconjunction([X | Rest]) :- call(X), conjunction(Rest).\n# ( a; b; c ) --> disjunction([a, b, c])\ndisjunction([X | Rest]) :- call(X).\ndisjunction([X | Rest]) :- disjunction(Rest).\n# Arithmetic\nadd(A, B, C) :- external("$1 + $2", [A, B], C).   # A + B = C, etc.\nsub(A, B, C) :- external("$1 - $2", [A, B], C).\nmul(A, B, C) :- external("$1 * $2", [A, B], C).\ndiv(A, B, C) :- external("$1 / $2", [A, B], C).\n# The canonical quicksort\nqsort([], []).\nqsort([X|Rest], Answer) :- partition(X, Rest, [], Before, [], After), qsort(Before, Bsort), qsort(After, Asort), append(Bsort, [X | Asort], Answer).\npartition(X, [], Before, Before, After, After).\npartition(X, [Y | Rest], B, [Y | Brest], A, Arest) :- leq(X, Y), partition(X, Rest, B, Brest, A, Arest).\npartition(X, [Y | Rest], B, Brest, A, [Y | Arest]) :- gtr(X, Y), partition(X, Rest, B, Brest, A, Arest).\nleq(X, Y) :- compare(X, Y, gt).\nleq(X, Y) :- compare(X, Y, eq).\ngtr(X, Y) :- compare(X, Y, lt).\n# Some list-processing stuff...\nappend([], Z, Z).\nappend([A|B], Z, [A|ZZ]) :- append(B, Z, ZZ).\nreverse([], []).\nreverse([A|B], Z) :- reverse(B, Brev), append(Brev, [A], Z).\nlength([], 0).\nlength([H|T], N) :- length(T, M), add(M, 1, N).\n# Standard prolog not/1\nnot(Term) :- call(Term), !, fail.\nnot(Term).\n# Standard prolog var/1\nvar(X) :- bagof(l, varTest(X), [l, l]).\nvarTest(a).\ntarTest(b).',
             2: 'bagof(c, triple(sc, A, B), L), length(L, N) # L should have 21 elements'
+          },
+          familytree: {
+            0: 'Family Tree',
+            1: ':- discontiguous male/1, female/1, parent/2.\nmale(dicky).\nmale(randy).\nmale(mike).\nmale(don).\nmale(elmer).\nfemale(anne).\nfemale(rosie).\nfemale(esther).\nfemale(mildred).\nfemale(greatgramma).\nmale(blair).\nmale(god).\nfemale(god).\nparent(don,randy).\nparent(don,mike).\nparent(don,anne).\nparent(rosie,randy).\nparent(rosie,mike).\nparent(rosie,anne).\nparent(elmer,don).\nparent(mildred,don).\nparent(esther,rosie).\nparent(esther,dicky).\nparent(greatgramma,esther).\nparent(randy,blair).\nmale(mel).\nmale(teo).\nparent(melsr,mel).\nparent(melsr,teo).\namerican(anne).\namerican(X) :-  ancestor(X,anne).\namerican(X) :- ancestor(anne,X).\nrelation(X,Y) :- ancestor(A,X), ancestor(A,Y).\nfather(X,Y) :- male(X),parent(X,Y).\nfather(god, _) :- male(god).\nmother(X,Y) :- female(X),parent(X,Y).\nson(X,Y) :- male(X),parent(Y,X).\ndaughter(X,Y) :- female(X),parent(Y,X).\ngrandfather(X,Y) :- male(X),parent(X,Somebody),parent(Somebody,Y).\naunt(X,Y) :- female(X),sister(X,Mom),mother(Mom,Y).\naunt(X,Y) :- female(X),sister(X,Dad),father(Dad,Y).\nsister(X,Y) :- female(X),parent(Par,X),parent(Par,Y), X \= Y.\nuncle(X,Y) :- brother(X,Par),parent(Par,Y).\ncousin(X,Y) :- uncle(Unc , X),father(Unc,Y).\nancestor(X,Y) :- parent(X,Y).\nancestor(X,Y) :- parent(X,Somebody),ancestor(Somebody,Y).\nbrother(X,Y) :-  male(X),parent(Somebody,X),parent(Somebody,Y), X \= Y.',
+            2: 'mother(X,Y)'
           }
         }
       }
