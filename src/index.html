@@ -17,17 +17,11 @@
       app.translations = {
         en: {
           biwascheme: "BiwaScheme",
-          clojurescript: "ClojureScript",
           haste: "Haste",
-          js_of_ocaml: "Js_of_ocaml",
           jsprolog: "jsprolog",
-          scalajs: "Scala.js",
           biwascheme_intro: "BiwaScheme is a Scheme interpreter written in JavaScript.",
-          clojurescript_intro: "ClojureScript is a compiler for Clojure that targets JavaScript.",
           haste_intro: "Haste is a compiler generating JavaScript code from Haskell.",
-          js_of_ocaml_intro: "Js_of_ocaml is a compiler of OCaml bytecode to Javascript. It makes it possible to run Ocaml programs in a Web browser.",
           jsprolog_intro: "jsprolog is a Prolog parser, compiler and interpreter written in Javascript.",
-          scalajs_intro: "Scala.js is a Scala to JavaScript compiler.",
           instruction: "Please type in some code!",
           query: "Please enter a query!",
           checkbox: "Show parsing results",
@@ -73,11 +67,8 @@
 
       app.logo = {
         biwascheme: "biwascheme.png",
-        clojurescript: "clojurescript.png",
         haste: "haskell.svg", // TODO: change the logo to the js one
-        js_of_ocaml: "js_of_ocaml.svg",
         jsprolog: "prolog.png", //  TODO: change the logo to the js one
-        scalajs: "scalajs.svg"
       }
 
       app.sample = {
@@ -141,11 +132,8 @@
 
       <select id="pgm-lang-select" onchange="changePgmLang(this.value)">
             <option value="biwascheme">BiwaScheme</option>
-            <option value="clojurescript">ClojureScript</option>
             <option value="haste">Haste</option>
-            <option value="js_of_ocaml">Js_of_ocaml</option>
             <option value="jsprolog">jsprolog</option>
-            <option value="scalajs">Scala.js</option>
           </select>
     </div>
     <p id="intro" class="App-intro"></p>
@@ -182,9 +170,6 @@
               biwa.evaluate(code, function(result) {
                 resultOutput.value = result;
               });
-              break;
-            case "clojurescript": // clojurescript interpretation
-              // TODO: add the clojurescript interpretation
               break;
             case "haste": // haste interpretation
               var compilerUrl = "https://platy.eng.kagawa-u.ac.jp/WappenWeb/HasteCompiler";
@@ -237,14 +222,8 @@
 
               });
               break;
-            case "js_of_ocaml": // js_of_ocaml interpretation
-              // TODO: add the js_of_ocaml interpretation
-              break;
             case "jsprolog": // jsprolog interpretation
               freeform(code, extraFieldValue);
-              break;
-            case "scalajs": // scalajs interpretation
-              // TODO: add the scalajs interpretation
               break;
             default:
               // shouldn't be reached
