@@ -80,6 +80,10 @@
           fibonacci: {
             0: 'Fibonacci',
             1: "(define (fib n)\n(if (< n 2) n (+ (fib (- n 1))\n(fib (- n 2)))))\n(fib 9)"
+          },
+          callcc: {
+            0: 'Continuation',
+            1: '(define function1\n  (lambda (k)\n    (begin (display "foo")\n      (k "bar")\n        (display "baz")\n)))\n(display (call-with-current-continuation function1))'
           }
         },
         haste: {
