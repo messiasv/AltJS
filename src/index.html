@@ -17,29 +17,29 @@
       app.translations = {
         en: {
           biwascheme: "BiwaScheme",
-          clojurescript: "ClojureScript",
           haste: "Haste",
-          js_of_ocaml: "Js_of_ocaml",
           jsprolog: "jsprolog",
-          scalajs: "Scala.js",
-
           biwascheme_intro: "BiwaScheme is a Scheme interpreter written in JavaScript.",
-          clojurescript_intro: "ClojureScript is a compiler for Clojure that targets JavaScript.",
           haste_intro: "Haste is a compiler generating JavaScript code from Haskell.",
-          js_of_ocaml_intro: "Js_of_ocaml is a compiler of OCaml bytecode to Javascript. It makes it possible to run Ocaml programs in a Web browser.",
           jsprolog_intro: "jsprolog is a Prolog parser, compiler and interpreter written in Javascript.",
-          scalajs_intro: "Scala.js is a Scala to JavaScript compiler.",
-
           instruction: "Please type in some code!",
           query: "Please enter a query!",
           checkbox: "Show parsing results",
           resultStr: "Result"
         },
+        es: {
+          biwascheme_intro: "BiwaScheme es un intérprete de Scheme escrito en JavaScript.",
+          haste_intro: "Haste es un compilador que genera código JavaScript de Haskell.",
+          jsprolog_intro: "Jsprolog es un analizador, compilador e intérprete Prolog escrito en Javascript.",
+          instruction: "¡Por favor, introduzca código!",
+          query: "¡Por favor, indique una consulta!",
+          checkbox: "Mostrar los resultados del análisis sintáctico",
+          resultStr: "Resultado"
+        },
         fr: {
           biwascheme_intro: "Biwascheme est un interpréteur du langage Scheme, écrit en JavaScript.",
           haste_intro: "Haste est un compilateur générant du code JavaScript depuis Haskell.",
-          jsprolog_intro: "jsprolog est un parseur, compilateur et interpréteur du langage Prolog, écrit en Javascript.",
-
+          jsprolog_intro: "jsprolog est un parseur, compilateur et interpréteur Prolog, écrit en Javascript.",
           instruction: "Merci d'entrer du code!",
           query: "Merci d'entrer une requête!",
           checkbox: "Afficher les résultats de l'analyse syntaxique",
@@ -49,7 +49,6 @@
           biwascheme_intro: "BiwaScheme は JavaScript で 書かれた Scheme インタプリタです。",
           haste_intro: "Haste は、Haskell から JavaScript コードを生成するコンパイラです。",
           jsprolog_intro: "jsprolog は Javascript で 書かれた Prolog パーサ、コンパイラ、インタプリタです。",
-
           instruction: "コードを入力してください！",
           query: "クエリを入力してください！",
           checkbox: "構文解析の結果を表示する",
@@ -58,8 +57,7 @@
         pt: {
           biwascheme_intro: "BiwaScheme é um interpretador Scheme escrito em JavaScript.",
           haste_intro: "Haste é um compilador que gera código JavaScript da Haskell.",
-          jsprolog_intro: "jsprolog é um analisador Prolog, compilador e intérprete escrito em Javascript.",
-
+          jsprolog_intro: "jsprolog é um analisador, compilador e intérprete Prolog escrito em Javascript.",
           instruction: "Por favor, introduza código!",
           query: "Por favor, indique uma consulta!",
           checkbox: "Mostrar os resultados da análise sintática",
@@ -69,11 +67,8 @@
 
       app.logo = {
         biwascheme: "biwascheme.png",
-        clojurescript: "clojurescript.png",
         haste: "haskell.svg", // TODO: change the logo to the js one
-        js_of_ocaml: "js_of_ocaml.svg",
         jsprolog: "prolog.png", //  TODO: change the logo to the js one
-        scalajs: "scalajs.svg"
       }
 
       app.sample = {
@@ -85,19 +80,32 @@
           fibonacci: {
             0: 'Fibonacci',
             1: "(define (fib n)\n(if (< n 2) n (+ (fib (- n 1))\n(fib (- n 2)))))\n(fib 9)"
+          },
+          callcc: {
+            0: 'Continuation',
+            1: '(+ 1 (call/cc\n       (lambda (k)\n         (+ 2 (k 3)))))'
           }
         },
         haste: {
           canvas: {
-            0: 'canvas simple',
+            0: 'Canvas Simple',
             1: 'import Haste\nimport Haste.Graphics.Canvas\nsquareShape :: Shape ()\nsquareShape = do\n  rect (-20, -20) (20, 20)\n  rect (-10, -10) (10, 10)\n  line (-20, -20) (20, 20)\nsquare :: Picture ()\nsquare = stroke squareShape\nfilledSquare :: Picture ()\nfilledSquare = fill squareShape\nmain :: IO ()\nmain = do\n  Just can <- getCanvasById "canvas"\n  animate can 0\nanimate :: Canvas -> Double -> IO ()\nanimate can angle = do\n  render can $ do\n    translate (160, 160) $ rotate angle $ do\n      square\n      translate (100, 100) . rotate (-angle) . color (RGB 255 0 0) $ filledSquare\n    color (RGBA 0 0 255 0.5) . font "20px Bitstream Vera" $ do\n      text (10, 160) "You can use transparency too!"\n  setTimer (Once 10) $ animate can (angle + 0.01)\n  return ()'
+          },
+          eratosthenes: {
+            0: "Sieve of Eratosthenes",
+            1: "import Data.List ((\\\\))\n\nprimesTo:: Integer -> [Integer]\nprimesTo m = do\n  sieve [2..m]\n  where\n  sieve (x:xs) = x : sieve (xs \\\\ [x,x+x..m])\n  sieve [] = []\n\nmain :: IO()\nmain = do\n  print (primesTo 120)"
           }
         },
         jsprolog: {
           elements: {
-            0: 'elements',
+            0: 'Elements',
             1: '# Enter your ruleset in here.\ntriple(sc, a, b).\ntriple(sc, b, c).\ntriple(sc, c, d).\ntriple(sc, d, e).\ntriple(sc, e, f).\ntriple(sc, f, g).\ntriple(type, sc, transitive).\ntriple(P, X, Y) :- NOTTHIS triple(type, P, transitive), NOTTHIS triple(P, X, Z), triple(P, Z, Y).\narcsOut(X, L) :- bagof(O, triple(P, X, O), L).\n### Accumulated standard library lives under here!\n# unification and ( x, y, z; w ) support\nunify(X, X).\n# ( a, b, c ) --> conjunction([a, b, c])\nconjunction([]).\nconjunction([X | Rest]) :- call(X), conjunction(Rest).\n# ( a; b; c ) --> disjunction([a, b, c])\ndisjunction([X | Rest]) :- call(X).\ndisjunction([X | Rest]) :- disjunction(Rest).\n# Arithmetic\nadd(A, B, C) :- external("$1 + $2", [A, B], C).   # A + B = C, etc.\nsub(A, B, C) :- external("$1 - $2", [A, B], C).\nmul(A, B, C) :- external("$1 * $2", [A, B], C).\ndiv(A, B, C) :- external("$1 / $2", [A, B], C).\n# The canonical quicksort\nqsort([], []).\nqsort([X|Rest], Answer) :- partition(X, Rest, [], Before, [], After), qsort(Before, Bsort), qsort(After, Asort), append(Bsort, [X | Asort], Answer).\npartition(X, [], Before, Before, After, After).\npartition(X, [Y | Rest], B, [Y | Brest], A, Arest) :- leq(X, Y), partition(X, Rest, B, Brest, A, Arest).\npartition(X, [Y | Rest], B, Brest, A, [Y | Arest]) :- gtr(X, Y), partition(X, Rest, B, Brest, A, Arest).\nleq(X, Y) :- compare(X, Y, gt).\nleq(X, Y) :- compare(X, Y, eq).\ngtr(X, Y) :- compare(X, Y, lt).\n# Some list-processing stuff...\nappend([], Z, Z).\nappend([A|B], Z, [A|ZZ]) :- append(B, Z, ZZ).\nreverse([], []).\nreverse([A|B], Z) :- reverse(B, Brev), append(Brev, [A], Z).\nlength([], 0).\nlength([H|T], N) :- length(T, M), add(M, 1, N).\n# Standard prolog not/1\nnot(Term) :- call(Term), !, fail.\nnot(Term).\n# Standard prolog var/1\nvar(X) :- bagof(l, varTest(X), [l, l]).\nvarTest(a).\ntarTest(b).',
             2: 'bagof(c, triple(sc, A, B), L), length(L, N) # L should have 21 elements'
+          },
+          familytree: {
+            0: 'Family Tree',
+            1: ':- discontiguous male/1, female/1, parent/2.\nmale(dicky).\nmale(randy).\nmale(mike).\nmale(don).\nmale(elmer).\nfemale(anne).\nfemale(rosie).\nfemale(esther).\nfemale(mildred).\nfemale(greatgramma).\nmale(blair).\nmale(god).\nfemale(god).\nparent(don,randy).\nparent(don,mike).\nparent(don,anne).\nparent(rosie,randy).\nparent(rosie,mike).\nparent(rosie,anne).\nparent(elmer,don).\nparent(mildred,don).\nparent(esther,rosie).\nparent(esther,dicky).\nparent(greatgramma,esther).\nparent(randy,blair).\nmale(mel).\nmale(teo).\nparent(melsr,mel).\nparent(melsr,teo).\namerican(anne).\namerican(X) :-  ancestor(X,anne).\namerican(X) :- ancestor(anne,X).\nrelation(X,Y) :- ancestor(A,X), ancestor(A,Y).\nfather(X,Y) :- male(X),parent(X,Y).\nfather(god, _) :- male(god).\nmother(X,Y) :- female(X),parent(X,Y).\nson(X,Y) :- male(X),parent(Y,X).\ndaughter(X,Y) :- female(X),parent(Y,X).\ngrandfather(X,Y) :- male(X),parent(X,Somebody),parent(Somebody,Y).\naunt(X,Y) :- female(X),sister(X,Mom),mother(Mom,Y).\naunt(X,Y) :- female(X),sister(X,Dad),father(Dad,Y).\nsister(X,Y) :- female(X),parent(Par,X),parent(Par,Y), X \= Y.\nuncle(X,Y) :- brother(X,Par),parent(Par,Y).\ncousin(X,Y) :- uncle(Unc , X),father(Unc,Y).\nancestor(X,Y) :- parent(X,Y).\nancestor(X,Y) :- parent(X,Somebody),ancestor(Somebody,Y).\nbrother(X,Y) :-  male(X),parent(Somebody,X),parent(Somebody,Y), X \= Y.',
+            2: 'mother(X,Y)'
           }
         }
       }
@@ -124,6 +132,7 @@
 
       <select id="lang-select" onchange="changeLang(this.value)">
             <option value="en">English</option>
+            <option value="es">Español</option>
             <option value="fr">Français</option>
             <option value="ja">日本語</option>
             <option value="pt">Português</option>
@@ -131,11 +140,8 @@
 
       <select id="pgm-lang-select" onchange="changePgmLang(this.value)">
             <option value="biwascheme">BiwaScheme</option>
-            <!-- <option value="clojurescript">ClojureScript</option> -->
             <option value="haste">Haste</option>
-            <!-- <option value="js_of_ocaml">Js_of_ocaml</option> -->
             <option value="jsprolog">jsprolog</option>
-            <!-- <option value="scalajs">Scala.js</option> -->
           </select>
     </div>
     <p id="intro" class="App-intro"></p>
@@ -173,9 +179,6 @@
                 resultOutput.value = result;
               });
               break;
-            case "clojurescript": // clojurescript interpretation
-              // TODO: add the clojurescript interpretation
-              break;
             case "haste": // haste interpretation
               var compilerUrl = "https://platy.eng.kagawa-u.ac.jp/WappenWeb/HasteCompiler";
               $(function() {
@@ -196,7 +199,6 @@
                   // creates the canvas to diplay the result
                   var canvas = document.createElement("canvas");
                   canvas.setAttribute("id", 'canvas');
-                  canvas.setAttribute("style", "border: 1px solid black;");
                   canvas.setAttribute("width", "320");
                   canvas.setAttribute("height", "320");
                   extra.appendChild(canvas);
@@ -227,14 +229,8 @@
 
               });
               break;
-            case "js_of_ocaml": // js_of_ocaml interpretation
-              // TODO: add the js_of_ocaml interpretation
-              break;
             case "jsprolog": // jsprolog interpretation
               freeform(code, extraFieldValue);
-              break;
-            case "scalajs": // scalajs interpretation
-              // TODO: add the scalajs interpretation
               break;
             default:
               // shouldn't be reached
