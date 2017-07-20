@@ -83,7 +83,7 @@
           },
           callcc: {
             0: 'Continuation',
-            1: '(define function1\n  (lambda (k)\n    (begin (display "foo")\n      (k "bar")\n        (display "baz")\n)))\n(display (call-with-current-continuation function1))'
+            1: '(+ 1 (call/cc\n       (lambda (k)\n         (+ 2 (k 3)))))'
           }
         },
         haste: {
