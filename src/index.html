@@ -94,6 +94,10 @@
           eratosthenes: {
             0: "Sieve of Eratosthenes",
             1: "import Data.List ((\\\\))\n\nprimesTo:: Integer -> [Integer]\nprimesTo m = do\n  sieve [2..m]\n  where\n  sieve (x:xs) = x : sieve (xs \\\\ [x,x+x..m])\n  sieve [] = []\n\nmain :: IO()\nmain = do\n  print (primesTo 120)"
+          },
+          n_queens: {
+            0: "N-queens",
+            1: "import Data.List (nub, permutations)\n \n-- checks if queens are on the same diagonal\n-- with [0..] we place each queen on her own row\ncheck f = length . nub . zipWith f [0..]\n \n-- filters out results where 2 or more queens are on the same diagonal\n-- with [0..n-1] we place each queeen on her own column\ngenerate n = filter (\\x -> check (+) x == n && check (-) x == n) $ permutations [0..n-1]\n \n-- 8 is for \"8 queens\"\nmain = print $ generate 8"
           }
         },
         jsprolog: {
