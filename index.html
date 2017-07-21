@@ -94,6 +94,26 @@
           eratosthenes: {
             0: "Sieve of Eratosthenes",
             1: "import Data.List ((\\\\))\n\nprimesTo:: Integer -> [Integer]\nprimesTo m = do\n  sieve [2..m]\n  where\n  sieve (x:xs) = x : sieve (xs \\\\ [x,x+x..m])\n  sieve [] = []\n\nmain :: IO()\nmain = do\n  print (primesTo 120)"
+          },
+          n_queens: {
+            0: "N-queens",
+            1: "import Data.List (nub, permutations)\n \n-- checks if queens are on the same diagonal\n-- with [0..] we place each queen on her own row\ncheck f = length . nub . zipWith f [0..]\n \n-- filters out results where 2 or more queens are on the same diagonal\n-- with [0..n-1] we place each queeen on her own column\ngenerate n = filter (\\x -> check (+) x == n && check (-) x == n) $ permutations [0..n-1]\n \n-- 8 is for \"8 queens\"\nmain = print $ generate 8"
+          },
+          n_queens2: {
+            0: "N-queens 2",
+            1: "import Control.Monad\nimport Data.List\n \n-- given n, \"queens n\" solves the n-queens problem, returning a list of all the\n-- safe arrangements. each solution is a list of the columns where the queens are\n-- located for each row\nqueens :: Int -> [[Int]]\nqueens n = map fst $ foldM oneMoreQueen ([],[1..n]) [1..n]  where \n \n  -- foldM :: (Monad m) => (a -> b -> m a) -> a -> [b] -> m a\n  -- foldM folds (from left to right) in the list monad, which is convenient for \n  -- \"nondeterminstically\" finding \"all possible solutions\" of something. the \n  -- initial value [] corresponds to the only safe arrangement of queens in 0 rows\n \n  -- given a safe arrangement y of queens in the first i rows, and a list of \n  -- possible choices, \"oneMoreQueen y _\" returns a list of all the safe \n  -- arrangements of queens in the first (i+1) rows along with remaining choices \n  oneMoreQueen (y,d) _ = [(x:y, delete x d) | x <- d, safe x]  where\n\n\n    safe x = and [x /= c + n && x /= c - n | (n,c) <- zip [1..] y]\n \n-- prints what the board looks like for a solution; with an extra newline\nprintSolution y = do\n     let n = length y\n     mapM_ (\\x -> putStrLn [if z == x then 'Q' else '.' | z <- [1..n]]) y\n     putStrLn \"\"\n \n-- prints all the solutions for 8 queens\nmain = mapM_ printSolution $ queens 8"
+          },
+          n_queens3: {
+            0: "N-queens 3",
+            1: "import Control.Monad (foldM)\nimport Data.List ((\\\\))\n \nmain :: IO ()\nmain = mapM_ print $ queens 8\n \nqueens :: Int -> [[Int]]\nqueens n = foldM f [] [1..n]\n    where\n      f qs _ = [q:qs | q <- [1..n] \\\\ qs, q `notDiag` qs]\n      q `notDiag` qs = and [abs (q - qi) /= i | (qi,i) <- qs `zip` [1..]]"
+          },
+          n_queens4: {
+            0: "N-queens 4",
+            1: "import Data.List (transpose, intercalate)\n \nqueenPuzzle :: Int -> Int -> [[Int]]\nqueenPuzzle nRows nCols\n  | nRows <= 0 = [[]]\n  | otherwise =\n    foldr\n      (\\solution a ->\n          a ++\n          foldr\n            (\\iCol b ->\n                if safe (nRows - 1) iCol solution\n                  then b ++ [solution ++ [iCol]]\n                  else b)\n            []\n            [1 .. nCols])\n      []\n      (queenPuzzle (nRows - 1) nCols)\n  where\n    safe iRow iCol solution =\n      True `notElem`\n      zipWith\n        (\\sc sr ->\n            (iCol == sc) || (sc + sr == iCol + iRow) || (sc - sr == iCol - iRow))\n        solution\n        [0 .. iRow - 1]\n \n-- TEST ------------------------------------------------------------------------\n-- 10 columns of solutions for the 8*8 board:\nshowSolutions :: Int -> Int -> [String]\nshowSolutions nCols nBoardSize =\n  unlines <$>\n  (((intercalate \"   \" <$>) . transpose . (boardLines <$>)) <$>\n   chunksOf nCols (queenPuzzle nBoardSize nBoardSize))\n  where\n    boardLines rows =\n      (\\r -> foldMap (\\c -> if_ (c == r) \"♛\" \".\") [1 .. (length rows)]) <$> rows\n \nchunksOf :: Int -> [a] -> [[a]]\nchunksOf i xs = take i <$> ($ (:)) (splits xs) []\n  where\n    splits [] _ n = []\n    splits l c n = l `c` splits (drop i l) c n\n \nif_ :: Bool -> a -> a -> a\nif_ True x _ = x\nif_ False _ y = y\n \nmain :: IO ()\nmain = mapM_ putStrLn $ showSolutions 10 8"
+          },
+          n_queens5: {
+            0: "N-queens 5",
+            1: "safe p n  = all not [ check (i, j) (1 + length p, n) | (i, j) <- zip [1..] p ]\ncheck (i,j) (m,n) = j == n || (i + j == m + n) || (i - j == m - n)\n\nqueens 0  = [[]]\nqueens m  = [ p ++ [n] | p <- queens (m - 1), n <- [1..8], safe p n ]\n\nmain = print (queens 8)"
           }
         },
         jsprolog: {
