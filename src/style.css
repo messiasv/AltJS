@@ -73,6 +73,10 @@
   color: green;
 }
 
+#clear-button {
+  color: red;
+}
+
 #extra-text-entry {
   display: block;
 }
