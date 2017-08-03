@@ -89,6 +89,10 @@
           callcc: {
             0: 'Continuation',
             1: '(+ 1 (call/cc\n       (lambda (k)\n         (+ 2 (k 3)))))'
+          },
+          n_queens: {
+            0: "N-queens",
+            1: "(define (attack? q1 q2)\n  (or (= (car q1) (car q2))\n      (= (cadr q1) (cadr q2))\n      (= (abs (- (car q1) (car q2)))\n         (abs (- (cadr q1) (cadr q2))))))\n(define (safe? q qs)\n  (cond ((null? qs) #t)\n        ((attack? q (car qs)) #f)\n        (else (safe? q (cdr qs)))))\n(define (queens n)\n  (let queen ((n n) (x 1) (y 1) (qs '()) (qss '()))\n    (cond ((< n x) (cons (reverse qs) qss))\n          ((< n y) qss)\n          ((safe? (list x y) qs)\n            (queen n x (+ y 1) qs\n              (queen n (+ x 1) 1\n                (cons (list x y) qs) qss)))\n          (else (queen n x (+ y 1) qs qss)))))\n(queens 8)"
           }
         },
         haste: {
