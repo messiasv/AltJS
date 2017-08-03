@@ -141,6 +141,11 @@
             0: "Farmer, Wolf, Goat and Cabbage 2",
             1: "# Enter your ruleset in here.\nmember(X,[X|_]).\nmember(X,[_|T]):-member(X,T).\nempty_stack([]).\nmember_stack(E, S) :- member(E, S).\nstack(E, S, [E|S]).\nempty_queue([]).\nmember_queue(E, S) :- member(E, S).\nadd_to_queue(E, [], [E]).\nadd_to_queue(E, [H|T], [H|Tnew]) :- add_to_queue(E, T, Tnew).\nremove_from_queue(E, [E|T], T).\nempty_set([]).\nmember_set(E, S) :- member(E, S).\nadd_to_set(X, S, S) :- member(X, S), !.\nadd_to_set(X, S, [X|S]).\nremove_from_set(_, [], []).\nremove_from_set(E, [E|T], T) :- !.\nremove_from_set(E, [H|T], [H|T_new]) :- remove_from_set(E, T, T_new), !.\n    \nunion([], S, S).\nunion([H|T], S, S_new) :- union(T, S, S2), add_to_set(H, S2, S_new).   \n    \nintersection([], _, []).\nintersection([H|T], S, [H|S_new]) :- member_set(H, S), intersection(T, S, S_new),!.\nintersection([_|T], S, S_new) :- intersection(T, S, S_new),!.\n    \nset_diff([], _, []).\nset_diff([H|T], S, T_new) :- member_set(H, S), set_diff(T, S, T_new),!.\nset_diff([H|T], S, [H|T_new]) :- set_diff(T, S, T_new), !.\nsubset([], _).\nsubset([H|T], S) :- member_set(H, S), subset(T, S).\nequal_set(S1, S2) :- subset(S1, S2), subset(S2, S1).\n    \nempty_sort_queue([]).\nmember_sort_queue(E, S) :- member(E, S).\ninsert_sort_queue(State, [], [State]).  \ninsert_sort_queue(State, [H | T], [State, H | T]) :- precedes(State, H).\ninsert_sort_queue(State, [H|T], [H | T_new]) :- insert_sort_queue(State, T, T_new). \n    \nremove_sort_queue(First, [First|Rest], Rest).\ngo(Start,Goal,Answer) :- empty_stack(Empty_been_stack), stack(Start,Empty_been_stack,Been_stack), path(Start,Goal,Been_stack,Answer).\nnot(Term) :- call(Term), !, fail.\nnot(Term).\npath(Goal,Goal,Been_stack,Been_stack).\npath(State,Goal,Been_stack,Answer) :- move(State,Next_state), not(member_stack(Next_state,Been_stack)), stack(Next_state,Been_stack,New_been_stack), path(Next_state,Goal,New_been_stack,Answer),!.\nmove(state(X,X,G,C), state(Y,Y,G,C)) :- opp(X,Y), not(unsafe(state(Y,Y,G,C))).\nmove(state(X,W,X,C), state(Y,W,Y,C)) :- opp(X,Y), not(unsafe(state(Y,W,Y,C))). \nmove(state(X,W,G,X), state(Y,W,G,Y)) :- opp(X,Y), not(unsafe(state(Y,W,G,Y))).\nmove(state(X,W,G,C), state(Y,W,G,C)) :- opp(X,Y), not(unsafe(state(Y,W,G,C))).\nmove(state(F,W,G,C), state(F,W,G,C)) :- fail.\nunsafe(state(X,Y,Y,C)) :- opp(X,Y).\nunsafe(state(X,W,Y,Y)) :- opp(X,Y).\nopp(e,w).\nopp(w,e).\nappend([], Z, Z).\nappend([A|B], Z, [A|ZZ]) :- append(B, Z, ZZ).\nreverse([], []).\nreverse([A|B], Z) :- reverse(B, Brev), append(Brev, [A], Z).",
             2: "go(state(w,w,w,w), state(e,e,e,e), Temp), reverse(Temp, Answer)."
+          },
+          canvas: {
+            0: "Canvas",
+            1: "drawCanvas(Text) :- external(\"var c = document.getElementById('canvas'); var ctx = c.getContext('2d'); grd = ctx.createRadialGradient(75,50,5,90,60,100); grd.addColorStop(0,'red'); grd.addColorStop(1,'white'); ctx.fillStyle = grd; ctx.fillRect(10,10,150,80); ctx.font = '40px Arial'; ctx.strokeText($1,25,60);\", [Text], _).",
+            2: "drawCanvas(\"Hello !\")"
           }
         }
       }
@@ -194,6 +199,14 @@
             var extraField = document.getElementById("extra-text-entry");
             var extraFieldValue = extraField.value;
         }
+        // creates the canvas to diplay the result
+        if(currentPgmLanguage == "haste" || currentPgmLanguage == "jsprolog"){
+          var canvas = document.createElement("canvas");
+          canvas.setAttribute("id", 'canvas');
+          canvas.setAttribute("width", "320");
+          canvas.setAttribute("height", "320");
+          extra.appendChild(canvas);
+        }
         if (code == "") {
           resultOutput.value = code;
         } else {
@@ -230,13 +243,6 @@
                   data: formData
                 }).done(function(data) {
                   $("#result").val(data);
-
-                  // creates the canvas to diplay the result
-                  var canvas = document.createElement("canvas");
-                  canvas.setAttribute("id", 'canvas');
-                  canvas.setAttribute("width", "320");
-                  canvas.setAttribute("height", "320");
-                  extra.appendChild(canvas);
 
                   // creates the script from js code returned by haste
                   var script = document.createElement("script");
