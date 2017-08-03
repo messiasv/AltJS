@@ -25,7 +25,8 @@
           instruction: "Please type in some code!",
           query: "Please enter a query!",
           checkbox: "Show parsing results",
-          resultStr: "Result"
+          resultStr: "Result",
+          samplesStr: "Samples"
         },
         es: {
           biwascheme_intro: "BiwaScheme es un intérprete de Scheme escrito en JavaScript.",
@@ -34,7 +35,8 @@
           instruction: "¡Por favor, introduzca código!",
           query: "¡Por favor, indique una consulta!",
           checkbox: "Mostrar los resultados del análisis sintáctico",
-          resultStr: "Resultado"
+          resultStr: "Resultado",
+          samplesStr: "Ejemplos"
         },
         fr: {
           biwascheme_intro: "Biwascheme est un interpréteur du langage Scheme, écrit en JavaScript.",
@@ -43,7 +45,8 @@
           instruction: "Merci d'entrer du code!",
           query: "Merci d'entrer une requête!",
           checkbox: "Afficher les résultats de l'analyse syntaxique",
-          resultStr: "Résultat"
+          resultStr: "Résultat",
+          samplesStr: "Exemples"
         },
         ja: {
           biwascheme_intro: "BiwaScheme は JavaScript で 書かれた Scheme インタプリタです。",
@@ -52,7 +55,8 @@
           instruction: "コードを入力してください！",
           query: "クエリを入力してください！",
           checkbox: "構文解析の結果を表示する",
-          resultStr: "結果"
+          resultStr: "結果",
+          samplesStr: "サンプル"
         },
         pt: {
           biwascheme_intro: "BiwaScheme é um interpretador Scheme escrito em JavaScript.",
@@ -61,7 +65,8 @@
           instruction: "Por favor, introduza código!",
           query: "Por favor, indique uma consulta!",
           checkbox: "Mostrar os resultados da análise sintática",
-          resultStr: "Resultado"
+          resultStr: "Resultado",
+          samplesStr: "Exemplos"
         }
       };
 
@@ -306,6 +311,9 @@
           }
         }
         document.getElementById("result").placeholder = gettext("resultStr");
+        if(document.getElementById("samples-str")) {
+          document.getElementById("samples-str").innerHTML = gettext("samplesStr");
+        }
       }
 
       function updateLogo() {
@@ -373,6 +381,13 @@
         }
 
         var samples = app.samples; // samples of the current language
+
+        if(samples) {
+          var samplesStr = document.createElement("h4");
+          samplesStr.setAttribute("id", "samples-str");
+          samplesStr.innerHTML = gettext("samplesStr");
+          buttons.appendChild(samplesStr);
+        }
 
         // creates a button for each sample
         for (var s in samples) {
